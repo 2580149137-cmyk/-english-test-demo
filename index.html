@@ -1,0 +1,4124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title id="pageTitle">英语单词 · 辨析闪卡</title>
+    <style>
+        /* ===== 全局重置 & 字体 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: -apple-system, "PingFang SC", "Helvetica Neue", system-ui, sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            transition: background 0.4s, color 0.4s;
+        }
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #eaeaea;
+        }
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            padding: 16px 16px 18px;
+            position: relative;
+            transition: background 0.4s, border-color 0.4s;
+            min-height: 94vh;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e0e0e0;
+        }
+        body.dark-mode .app-container {
+            background: #1e1e1e;
+            border-color: #333;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ===== 水印「笃」= 右下侧 ===== */
+        .watermark {
+            position: absolute;
+            bottom: 37px;
+            right: 6px;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            font-size: 157px;
+            font-weight: 900;
+            color: #c0c0c0;
+            opacity: 0.08;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+            line-height: 1;
+            transform: rotate(2deg);
+            text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.02);
+            transition: color 0.4s, opacity 0.4s;
+        }
+        body.dark-mode .watermark {
+            color: #fff;
+            opacity: 0.05;
+        }
+
+        /* ===== 无痕提示 ===== */
+        .private-tip {
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 6px 12px;
+            margin-bottom: 8px;
+            font-size: 11px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid #ccc;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            flex-shrink: 0;
+            transition: background 0.4s, border-color 0.4s, color 0.4s;
+        }
+        .private-tip .tip-icon-wrap {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #222;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            transition: background 0.4s, color 0.4s;
+            font-family: inherit;
+            line-height: 1;
+        }
+        body.dark-mode .private-tip {
+            background: #2a2a2a;
+            border-color: #444;
+            color: #bbb;
+        }
+        body.dark-mode .private-tip .tip-icon-wrap {
+            background: #eee;
+            color: #1a1a1a;
+        }
+
+        /* ===== 状态栏 ===== */
+        .status-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4px 10px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            padding: 6px 12px;
+            margin: 4px 0 6px;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.4s, border-color 0.4s, color 0.4s;
+            border: 1px solid #d0d0d0;
+            flex-shrink: 0;
+        }
+        body.dark-mode .status-bar {
+            background: #3a3a3a;
+            border-color: #555;
+        }
+        .status-bar .mode-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a1a1a;
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+            transition: color 0.4s;
+        }
+        body.dark-mode .status-bar .mode-label {
+            color: #eee;
+        }
+        .status-bar .mode-label .highlight {
+            color: #fff;
+            -webkit-text-stroke: 0.7px #000;
+            paint-order: stroke fill;
+            transition: color 0.4s, -webkit-text-stroke 0.4s;
+        }
+        body.dark-mode .status-bar .mode-label .highlight {
+            color: #000;
+            -webkit-text-stroke: 0.7px #fff;
+        }
+        .status-bar .stats {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #555;
+            flex-wrap: wrap;
+            transition: color 0.4s;
+        }
+        body.dark-mode .status-bar .stats {
+            color: #aaa;
+        }
+        .status-bar .stats .stat-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            white-space: nowrap;
+        }
+        .status-bar .stats .stat-item .num {
+            font-weight: 700;
+            color: #1a1a1a;
+            transition: color 0.4s;
+        }
+        body.dark-mode .status-bar .stats .stat-item .num {
+            color: #eee;
+        }
+        .status-bar .stats .stat-item .num.fav-num,
+        .status-bar .stats .stat-item .num.wrong-num {
+            color: #1a1a1a;
+        }
+        body.dark-mode .status-bar .stats .stat-item .num.fav-num,
+        body.dark-mode .status-bar .stats .stat-item .num.wrong-num {
+            color: #eee;
+        }
+        .status-bar .stats .stat-item .star-symbol {
+            color: #222;
+            transition: color 0.4s;
+        }
+        body.dark-mode .status-bar .stats .stat-item .star-symbol {
+            color: #eee;
+        }
+
+        /* ===== 导出按钮 — 原有错题导出（保留） ===== */
+        .status-bar .export-btn {
+            background: linear-gradient(145deg, #f5f5f5, #e0e0e0);
+            border: 2px solid #222;
+            cursor: pointer;
+            padding: 0 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: 0.15s;
+            flex-shrink: 0;
+            width: 38px;
+            height: 28px;
+            border-radius: 6px;
+            color: #222;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.6);
+        }
+        .status-bar .export-btn svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+            stroke: currentColor;
+            stroke-width: 5.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+        .status-bar .export-btn:active {
+            transform: scale(0.90);
+            box-shadow: 0 0 0 rgba(0,0,0,0.10), inset 0 2px 4px rgba(0,0,0,0.15);
+        }
+        body.dark-mode .status-bar .export-btn {
+            background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+            border-color: #eee;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+            color: #fff;
+        }
+        body.dark-mode .status-bar .export-btn:active {
+            box-shadow: 0 0 0 rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        /* ===== 标题栏 ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e0e0e0;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+            transition: border-color 0.4s;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+        body.dark-mode .header {
+            border-bottom-color: #3a3a3a;
+        }
+        .header .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            transition: color 0.4s;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow: visible;
+            text-overflow: clip;
+            max-width: 100%;
+            padding-right: 4px;
+        }
+        body.dark-mode .header .title {
+            color: #f0f0f0;
+        }
+        .header .right-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+            flex-wrap: nowrap;
+        }
+        .header .right-group .day-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #222;
+            letter-spacing: 0.5px;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            transition: color 0.4s;
+            line-height: 1.4;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        body.dark-mode .header .right-group .day-label {
+            color: #ddd;
+        }
+
+        .header .right-group .taiji-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.15s;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .header .right-group .taiji-btn svg {
+            width: 24px;
+            height: 24px;
+            display: block;
+        }
+        .header .right-group .taiji-btn:active {
+            transform: scale(0.92);
+        }
+        .header .right-group .taiji-btn .taiji-light {
+            display: block;
+        }
+        .header .right-group .taiji-btn .taiji-dark {
+            display: none;
+        }
+        body.dark-mode .header .right-group .taiji-btn .taiji-light {
+            display: none !important;
+        }
+        body.dark-mode .header .right-group .taiji-btn .taiji-dark {
+            display: block;
+        }
+        .taiji-light {
+            color: #222;
+        }
+        .taiji-dark {
+            color: #eee;
+        }
+
+        .header .right-group .search-wrap {
+            display: inline-flex;
+            align-items: center;
+            background: #f0f0f0;
+            border-radius: 20px;
+            padding: 0 4px 0 8px;
+            height: 28px;
+            min-width: 70px;
+            width: 90px;
+            transition: background 0.4s, width 0.2s;
+            position: relative;
+            flex-shrink: 0;
+            overflow: visible;
+        }
+        body.dark-mode .header .right-group .search-wrap {
+            background: #2a2a2a;
+        }
+        .header .right-group .search-wrap .search-icon {
+            font-size: 12px;
+            color: #888;
+            margin-right: 2px;
+            flex-shrink: 0;
+            transition: color 0.4s;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+        body.dark-mode .header .right-group .search-wrap .search-icon {
+            color: #888;
+        }
+        .header .right-group .search-input {
+            border: none;
+            background: transparent;
+            padding: 0;
+            font-size: 11px;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            outline: none;
+            color: #222;
+            width: 36px;
+            height: 26px;
+            transition: color 0.4s, width 0.2s;
+            flex: 1 1 auto;
+            min-width: 16px;
+        }
+        body.dark-mode .header .right-group .search-input {
+            color: #eee;
+        }
+        .header .right-group .search-input::placeholder {
+            color: #aaa;
+            font-size: 10px;
+            transition: color 0.4s;
+        }
+        body.dark-mode .header .right-group .search-input::placeholder {
+            color: #777;
+        }
+        .header .right-group .search-clear {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            min-height: 20px;
+            border-radius: 50%;
+            border: none;
+            background: none;
+            color: #888;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 0;
+            flex-shrink: 0;
+            line-height: 1;
+            transition: color 0.2s, background 0.2s;
+            margin-left: 1px;
+            touch-action: manipulation;
+        }
+        .header .right-group .search-clear.visible {
+            display: flex;
+        }
+        .header .right-group .search-clear:hover {
+            color: #222;
+            background: rgba(0,0,0,0.05);
+        }
+        .header .right-group .search-clear:active {
+            transform: scale(0.90);
+        }
+        body.dark-mode .header .right-group .search-clear {
+            color: #888;
+        }
+        body.dark-mode .header .right-group .search-clear:hover {
+            color: #eee;
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* ===== 仪表盘 ===== */
+        .dashboard {
+            background: #f8f8f8;
+            border-radius: 14px;
+            padding: 10px 14px;
+            margin: 4px 0 8px;
+            border: 1px solid #e8e8e8;
+            font-size: 12px;
+            color: #333;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.4s, border-color 0.4s, color 0.4s;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 12px;
+            align-items: baseline;
+            flex-shrink: 0;
+        }
+        body.dark-mode .dashboard {
+            background: #252525;
+            border-color: #3a3a3a;
+            color: #ccc;
+        }
+        .dashboard .item {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        .dashboard .item .label {
+            color: #999;
+            font-weight: 400;
+            font-size: 11px;
+            transition: color 0.4s;
+        }
+        body.dark-mode .dashboard .item .label {
+            color: #888;
+        }
+        .dashboard .item .value {
+            font-weight: 600;
+            color: #222;
+            font-size: 12px;
+            transition: color 0.4s;
+        }
+        body.dark-mode .dashboard .item .value {
+            color: #eee;
+        }
+        .dashboard .item .value.warning {
+            color: #c0392b;
+        }
+        body.dark-mode .dashboard .item .value.warning {
+            color: #e74c3c;
+        }
+        .dashboard .item .value.success {
+            color: #27ae60;
+        }
+        body.dark-mode .dashboard .item .value.success {
+            color: #2ecc71;
+        }
+        .dashboard .trend {
+            grid-column: 1 / -1;
+            font-size: 11px;
+            color: #888;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.4s;
+        }
+        body.dark-mode .dashboard .trend {
+            color: #999;
+        }
+        .dashboard .progress-row {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+        .dashboard .progress-track {
+            flex: 1;
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            transition: background 0.4s;
+        }
+        body.dark-mode .dashboard .progress-track {
+            background: #3a3a3a;
+        }
+        .dashboard .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #222;
+            border-radius: 6px;
+            transition: width 0.35s ease, background 0.4s;
+        }
+        body.dark-mode .dashboard .progress-fill {
+            background: #eee;
+        }
+        .dashboard .progress-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: #888;
+            white-space: nowrap;
+            transition: color 0.4s;
+            min-width: 40px;
+            text-align: right;
+        }
+        body.dark-mode .dashboard .progress-label {
+            color: #999;
+        }
+
+        /* ===== Tab 栏 ===== */
+        .tab-bar {
+            display: flex;
+            gap: 2px;
+            margin: 2px 0 8px;
+            background: #f0f0f0;
+            padding: 3px;
+            border-radius: 20px;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+            transition: background 0.4s;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+        }
+        body.dark-mode .tab-bar {
+            background: #2a2a2a;
+        }
+        .tab-bar button {
+            border: none;
+            background: transparent;
+            padding: 5px 10px;
+            border-radius: 18px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: 0.3px;
+            flex: 1 1 auto;
+            white-space: nowrap;
+            min-width: 50px;
+        }
+        body.dark-mode .tab-bar button {
+            color: #888;
+        }
+        .tab-bar button.active {
+            background: #222;
+            color: #fff;
+        }
+        body.dark-mode .tab-bar button.active {
+            background: #eee;
+            color: #222;
+        }
+        .tab-bar button:active {
+            transform: scale(0.96);
+        }
+
+        /* ===== 卡片 ===== */
+        .card-wrapper {
+            flex: 1;
+            margin: 2px 0 8px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            cursor: default;
+        }
+        .card {
+            width: 100%;
+            min-height: 280px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+            padding: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid #e8e8e8;
+            cursor: pointer;
+            transition: opacity 0.35s ease, border-color 0.4s, background 0.4s;
+            overflow: hidden;
+            max-height: 780px;
+        }
+        body.dark-mode .card {
+            background: #252525;
+            border-color: #3a3a3a;
+        }
+        .card-front,
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px 18px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.35s ease, visibility 0.35s ease, background 0.4s, border-color 0.4s;
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: 100%;
+        }
+        body.dark-mode .card-front,
+        body.dark-mode .card-back {
+            background: #252525;
+            border-color: #3a3a3a;
+        }
+        .card-front {
+            opacity: 1;
+            visibility: visible;
+            z-index: 2;
+            pointer-events: auto;
+        }
+        .card-back {
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1;
+            pointer-events: none;
+            padding: 18px 18px;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            height: auto;
+            min-height: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+        }
+        .card.flipped .card-front {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .card.flipped .card-back {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            z-index: 2;
+            height: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+        }
+        .card.flipped {
+            height: auto;
+            min-height: 280px;
+            max-height: 780px;
+        }
+
+        .card-front .word-list {
+            font-size: clamp(16px, 4.2vw, 24px);
+            font-weight: 600;
+            color: #1a1a1a;
+            line-height: 1.8;
+            letter-spacing: 0.5px;
+            text-align: center;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            transition: color 0.4s, font-size 0.2s;
+            padding: 8px 0;
+        }
+        body.dark-mode .card-front .word-list {
+            color: #eee;
+        }
+        .card-front .word-list span {
+            display: inline-block;
+            margin: 0 6px;
+            word-break: break-word;
+        }
+        .card-front .hint {
+            margin-top: 14px;
+            font-size: 11px;
+            color: #bbb;
+            text-align: center;
+            letter-spacing: 1px;
+            font-weight: 300;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            transition: color 0.4s;
+        }
+        body.dark-mode .card-front .hint {
+            color: #666;
+        }
+        .card-front .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            font-size: 16px;
+            color: #888;
+            gap: 6px;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            padding: 20px;
+            text-align: center;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            transition: background 0.4s, color 0.4s;
+        }
+        body.dark-mode .card-front .lock-overlay {
+            background: rgba(30, 30, 30, 0.88);
+            color: #aaa;
+        }
+        .card-front .lock-overlay .lock-icon {
+            font-size: 30px;
+            opacity: 0.5;
+        }
+        .card-front .lock-overlay .lock-sub {
+            font-size: 12px;
+            color: #aaa;
+        }
+        body.dark-mode .card-front .lock-overlay .lock-sub {
+            color: #777;
+        }
+        .card-front .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #aaa;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+            transition: color 0.4s;
+        }
+        body.dark-mode .card-front .empty-state {
+            color: #888;
+        }
+        .card-front .empty-state .empty-icon {
+            font-size: 32px;
+            opacity: 0.4;
+        }
+        .card-front .empty-state .empty-sub {
+            font-size: 12px;
+            color: #bbb;
+            transition: color 0.4s;
+        }
+        body.dark-mode .card-front .empty-state .empty-sub {
+            color: #666;
+        }
+
+        /* ===== 卡片背面 ===== */
+        .card-back .item {
+            width: 100%;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px 10px;
+            transition: border-color 0.4s;
+        }
+        body.dark-mode .card-back .item {
+            border-bottom-color: #3a3a3a;
+        }
+        .card-back .item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .card-back .word {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            word-break: break-word;
+            transition: color 0.4s;
+        }
+        body.dark-mode .card-back .word {
+            color: #eee;
+        }
+        .card-back .phonetic {
+            font-size: 12px;
+            color: #888;
+            font-weight: 400;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            word-break: break-word;
+            transition: color 0.4s;
+        }
+        body.dark-mode .card-back .phonetic {
+            color: #999;
+        }
+        .card-back .meaning {
+            font-size: 13px;
+            color: #444;
+            font-weight: 400;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.5;
+            flex: 1 1 100%;
+            word-break: break-word;
+            transition: color 0.4s;
+        }
+        body.dark-mode .card-back .meaning {
+            color: #ccc;
+        }
+        .card-back .analysis {
+            width: 100%;
+            margin-top: 8px;
+            padding: 8px 14px;
+            background: #f7f7f7;
+            border-radius: 10px;
+            border-left: 3px solid #888;
+            font-size: 12px;
+            color: #222;
+            line-height: 1.6;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            flex-shrink: 0;
+            max-height: 180px;
+            overflow-y: auto;
+            word-break: break-word;
+            transition: background 0.4s, color 0.4s, border-color 0.4s;
+        }
+        body.dark-mode .card-back .analysis {
+            background: #2a2a2a;
+            color: #ddd;
+            border-left-color: #888;
+        }
+        .card-back .analysis strong {
+            font-weight: 600;
+            color: #000;
+            transition: color 0.4s;
+        }
+        body.dark-mode .card-back .analysis strong {
+            color: #fff;
+        }
+        .card-back .source-tag {
+            font-size: 10px;
+            color: #aaa;
+            text-align: right;
+            width: 100%;
+            margin-top: 2px;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            letter-spacing: 0.3px;
+            transition: color 0.4s;
+            border-top: 1px dashed #e0e0e0;
+            padding-top: 4px;
+        }
+        body.dark-mode .card-back .source-tag {
+            color: #666;
+            border-top-color: #3a3a3a;
+        }
+        .card-back .review-tag {
+            font-size: 11px;
+            color: #999;
+            text-align: right;
+            width: 100%;
+            margin-top: 4px;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            letter-spacing: 0.5px;
+            transition: color 0.4s;
+        }
+        body.dark-mode .card-back .review-tag {
+            color: #777;
+        }
+        .card-back .card-actions {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-top: 10px;
+            width: 100%;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+        .card-back .card-actions .action-btn {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #222;
+            transition: 0.15s;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            background: #f5f5f5;
+            flex-shrink: 0;
+        }
+        body.dark-mode .card-back .card-actions .action-btn {
+            background: #2a2a2a;
+            color: #eee;
+            border-color: #444;
+        }
+        .card-back .card-actions .action-btn:active {
+            transform: scale(0.92);
+            background: #e0e0e0;
+        }
+        body.dark-mode .card-back .card-actions .action-btn:active {
+            background: #3a3a3a;
+        }
+        .card-back .card-actions .action-btn.fav-active {
+            background: #222;
+            color: #fff;
+            border-color: #222;
+        }
+        body.dark-mode .card-back .card-actions .action-btn.fav-active {
+            background: #eee;
+            color: #222;
+            border-color: #eee;
+        }
+
+        /* ===== 底部 ===== */
+        .bottom-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+            padding-top: 6px;
+            border-top: 1px solid #e0e0e0;
+            position: relative;
+            z-index: 2;
+            gap: 6px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+            transition: border-color 0.4s;
+        }
+        body.dark-mode .bottom-row {
+            border-top-color: #3a3a3a;
+        }
+        .bottom-row .left-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .bottom-row .left-group .icon-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: #f5f5f5;
+            color: #222;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            user-select: none;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            flex-shrink: 0;
+        }
+        body.dark-mode .bottom-row .left-group .icon-btn {
+            background: #2a2a2a;
+            color: #eee;
+            border-color: #444;
+        }
+        .bottom-row .left-group .icon-btn:active {
+            transform: scale(0.92);
+            background: #e0e0e0;
+        }
+        body.dark-mode .bottom-row .left-group .icon-btn:active {
+            background: #3a3a3a;
+        }
+        .bottom-row .left-group .icon-btn.active-filter {
+            background: #222;
+            color: #fff;
+            border-color: #222;
+        }
+        body.dark-mode .bottom-row .left-group .icon-btn.active-filter {
+            background: #eee;
+            color: #222;
+            border-color: #eee;
+        }
+        .bottom-row .left-group .icon-btn.death {
+            color: #222;
+            border-color: #ccc;
+            font-size: 0;
+        }
+        body.dark-mode .bottom-row .left-group .icon-btn.death {
+            color: #eee;
+            border-color: #444;
+        }
+        .bottom-row .left-group .icon-btn.death svg {
+            width: 22px;
+            height: 22px;
+            stroke: #222;
+            fill: none;
+            transition: stroke 0.4s;
+        }
+        body.dark-mode .bottom-row .left-group .icon-btn.death svg {
+            stroke: #eee;
+        }
+        .bottom-row .left-group .mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: #888;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            cursor: pointer;
+            user-select: none;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            transition: 0.15s;
+            border: none;
+        }
+        body.dark-mode .bottom-row .left-group .mode-toggle {
+            background: #2a2a2a;
+            color: #aaa;
+        }
+        .bottom-row .left-group .mode-toggle:active {
+            background: #ddd;
+        }
+        body.dark-mode .bottom-row .left-group .mode-toggle:active {
+            background: #3a3a3a;
+        }
+        .bottom-row .left-group .mode-toggle .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #999;
+            transition: background 0.2s;
+        }
+        .bottom-row .left-group .mode-toggle .dot.strict {
+            background: #c0392b;
+        }
+        body.dark-mode .bottom-row .left-group .mode-toggle .dot.strict {
+            background: #e74c3c;
+        }
+        .bottom-row .left-group .mode-toggle .dot.loose {
+            background: #27ae60;
+        }
+        body.dark-mode .bottom-row .left-group .mode-toggle .dot.loose {
+            background: #2ecc71;
+        }
+        .bottom-row .left-group .report-btn {
+            background: #f0f0f0;
+            border: none;
+            border-radius: 30px;
+            padding: 4px 10px;
+            font-size: 15px;
+            color: #222;
+            cursor: pointer;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+            min-width: 34px;
+            min-height: 34px;
+        }
+        body.dark-mode .bottom-row .left-group .report-btn {
+            background: #2a2a2a;
+            color: #ccc;
+        }
+        .bottom-row .left-group .report-btn:active {
+            transform: scale(0.95);
+            background: #ddd;
+        }
+        body.dark-mode .bottom-row .left-group .report-btn:active {
+            background: #3a3a3a;
+        }
+        .bottom-row .left-group .reset-btn {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            font-size: 14px;
+            color: #222;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            flex-shrink: 0;
+        }
+        body.dark-mode .bottom-row .left-group .reset-btn {
+            background: #2a2a2a;
+            color: #ccc;
+            border-color: #444;
+        }
+        .bottom-row .left-group .reset-btn:active {
+            transform: scale(0.92);
+            background: #ddd;
+        }
+        body.dark-mode .bottom-row .left-group .reset-btn:active {
+            background: #3a3a3a;
+        }
+        .bottom-row .footer-saying {
+            font-size: 10px;
+            color: #999;
+            letter-spacing: 3px;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            opacity: 0.5;
+            user-select: none;
+            transition: color 0.4s, opacity 0.4s;
+            text-align: right;
+            line-height: 1.4;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+        body.dark-mode .bottom-row .footer-saying {
+            color: #888;
+            opacity: 0.5;
+        }
+
+        /* ===== 新增独立备份按钮组 ===== */
+        .backup-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+            flex-shrink: 0;
+            transition: border-color 0.4s;
+        }
+        body.dark-mode .backup-section {
+            border-top-color: #3a3a3a;
+        }
+        .backup-btn {
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 6px 18px;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.6);
+            color: #222;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        .backup-btn:active {
+            transform: scale(0.95);
+        }
+        body.dark-mode .backup-btn {
+            background: #2a2a2a;
+            color: #eee;
+            border-color: #555;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+        .backup-divider {
+            color: #aaa;
+            font-size: 18px;
+            font-weight: 300;
+        }
+        body.dark-mode .backup-divider {
+            color: #666;
+        }
+
+        /* ===== 快捷键弹窗 ===== */
+        .shortcut-toast {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 30, 30, 0.92);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: 0.5px;
+            z-index: 999;
+            pointer-events: none;
+            transition: opacity 0.5s, transform 0.4s;
+            opacity: 0;
+            transform: translateX(-50%) translateY(-10px);
+            text-align: center;
+            max-width: 92%;
+            line-height: 1.6;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .shortcut-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        body.dark-mode .shortcut-toast {
+            background: rgba(240, 240, 240, 0.92);
+            color: #222;
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+        .shortcut-toast kbd {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin: 0 2px;
+            font-family: inherit;
+        }
+        body.dark-mode .shortcut-toast kbd {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .toast-export-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            vertical-align: middle;
+        }
+        .toast-export-icon svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+            stroke: #222;
+            stroke-width: 4.5 !important;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            transition: stroke 0.4s;
+        }
+        body.dark-mode .toast-export-icon svg {
+            stroke: #eee;
+        }
+
+        /* ===== 模态框 ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        body.dark-mode .modal-overlay {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 24px;
+            max-width: 440px;
+            width: 100%;
+            padding: 20px 20px 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-height: 90vh;
+            overflow: hidden;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            transform: scale(0.95);
+            transition: transform 0.3s, background 0.4s, color 0.4s;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+        body.dark-mode .modal-box {
+            background: #252525;
+            color: #ddd;
+        }
+        .modal-box .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            flex-shrink: 0;
+            transition: color 0.4s, border-color 0.4s;
+        }
+        body.dark-mode .modal-box .modal-title {
+            color: #eee;
+            border-bottom-color: #3a3a3a;
+        }
+        .modal-box .modal-body {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            background: #f8f8f8;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            overflow-y: auto;
+            flex: 1 1 auto;
+            min-height: 0;
+            max-height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background 0.4s, border-color 0.4s, color 0.4s;
+        }
+        body.dark-mode .modal-box .modal-body {
+            background: #1e1e1e;
+            border-color: #3a3a3a;
+            color: #ccc;
+        }
+        .modal-box .modal-body .report-text {
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            font-size: 13px;
+            color: #222;
+            width: 100%;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: color 0.4s;
+        }
+        body.dark-mode .modal-box .modal-body .report-text {
+            color: #ddd;
+        }
+        .modal-box .modal-body .report-text .center {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 6px;
+        }
+        .modal-box .modal-body .report-text .left {
+            text-align: center;
+            width: 100%;
+            display: block;
+            align-self: center;
+        }
+        .modal-box .modal-body .report-text .indent {
+            padding-left: 0;
+            text-align: center;
+            width: 100%;
+        }
+        .modal-box .modal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            padding-top: 8px;
+            border-top: 1px solid #eee;
+            margin-top: 4px;
+            flex-shrink: 0;
+            transition: border-color 0.4s;
+        }
+        body.dark-mode .modal-box .modal-actions {
+            border-top-color: #3a3a3a;
+        }
+        .modal-box .modal-actions button {
+            padding: 8px 24px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            background: #f5f5f5;
+            color: #222;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", "宋体", serif !important;
+            -webkit-font-smoothing: antialiased;
+            font-weight: 500;
+        }
+        body.dark-mode .modal-box .modal-actions button {
+            background: #2a2a2a;
+            color: #ccc;
+            border-color: #444;
+        }
+        .modal-box .modal-actions button:active {
+            transform: scale(0.95);
+        }
+        .modal-box .modal-actions button.primary {
+            background: #222;
+            color: #fff;
+            border-color: #222;
+        }
+        body.dark-mode .modal-box .modal-actions button.primary {
+            background: #eee;
+            color: #222;
+            border-color: #eee;
+        }
+        .modal-box .modal-actions button.primary:active {
+            background: #444;
+        }
+        body.dark-mode .modal-box .modal-actions button.primary:active {
+            background: #ccc;
+        }
+        .modal-box .modal-actions button.success {
+            background: #27ae60;
+            color: #fff;
+            border-color: #27ae60;
+        }
+        body.dark-mode .modal-box .modal-actions button.success {
+            background: #1e8449;
+            color: #fff;
+            border-color: #1e8449;
+        }
+        .modal-box .modal-actions button.success:active {
+            background: #1e8449;
+        }
+        .modal-box .modal-actions button.secondary {
+            background: transparent;
+            border-color: #ccc;
+        }
+        body.dark-mode .modal-box .modal-actions button.secondary {
+            background: transparent;
+            border-color: #555;
+            color: #aaa;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 400px) {
+            .app-container {
+                padding: 10px 8px 12px;
+            }
+            .header .title {
+                font-size: 14px;
+                letter-spacing: 0.5px;
+                padding-right: 2px;
+            }
+            .header .right-group {
+                gap: 4px;
+            }
+            .header .right-group .day-label {
+                font-size: 11px;
+            }
+            .header .right-group .search-wrap {
+                width: 100px;
+                min-width: 80px;
+                max-width: 100px;
+                padding: 0 2px 0 6px;
+                height: 26px;
+            }
+            .header .right-group .search-input {
+                font-size: 10px;
+                min-width: 18px;
+                height: 24px;
+            }
+            .header .right-group .search-clear {
+                width: 20px;
+                height: 20px;
+                min-width: 20px;
+                min-height: 20px;
+                font-size: 12px;
+                margin-left: 1px;
+                display: none;
+                flex-shrink: 0;
+            }
+            .header .right-group .search-clear.visible {
+                display: flex;
+            }
+            .header .right-group .taiji-btn {
+                width: 24px;
+                height: 24px;
+            }
+            .header .right-group .taiji-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+            .status-bar {
+                padding: 5px 10px;
+                font-size: 11px;
+                gap: 2px 6px;
+            }
+            .status-bar .mode-label {
+                font-size: 11px;
+            }
+            .status-bar .stats {
+                font-size: 10px;
+                gap: 4px;
+            }
+            .status-bar .export-btn {
+                width: 34px;
+                height: 24px;
+                padding: 0 4px;
+            }
+            .status-bar .export-btn svg {
+                width: 15px;
+                height: 15px;
+            }
+            .dashboard {
+                padding: 8px 10px;
+                font-size: 11px;
+                gap: 2px 8px;
+            }
+            .dashboard .item .label {
+                font-size: 10px;
+            }
+            .dashboard .item .value {
+                font-size: 11px;
+            }
+            .dashboard .trend {
+                font-size: 10px;
+            }
+            .dashboard .progress-label {
+                font-size: 10px;
+            }
+            .tab-bar button {
+                font-size: 10px;
+                padding: 4px 6px;
+                min-width: 40px;
+            }
+            .card-front .word-list {
+                font-size: clamp(14px, 3.8vw, 19px);
+                line-height: 1.6;
+            }
+            .card-front .hint {
+                font-size: 10px;
+            }
+            .bottom-row .left-group .icon-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+            .bottom-row .left-group .icon-btn.death svg {
+                width: 18px;
+                height: 18px;
+            }
+            .bottom-row .left-group .report-btn {
+                font-size: 13px;
+                min-width: 30px;
+                min-height: 30px;
+                padding: 2px 6px;
+            }
+            .bottom-row .left-group .reset-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+            .bottom-row .footer-saying {
+                font-size: 9px;
+                letter-spacing: 2px;
+            }
+            .watermark {
+                font-size: 100px;
+                bottom: 28px;
+                right: 4px;
+            }
+            .private-tip {
+                font-size: 10px;
+                padding: 4px 10px;
+            }
+            .private-tip .tip-icon-wrap {
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+            }
+            .card {
+                min-height: 240px;
+                max-height: 660px;
+            }
+            .card.flipped {
+                min-height: 240px;
+                max-height: 660px;
+            }
+            .card-front,
+            .card-back {
+                padding: 14px 12px;
+            }
+            .card-back .word {
+                font-size: 13px;
+            }
+            .card-back .meaning {
+                font-size: 12px;
+            }
+            .card-back .analysis {
+                font-size: 11px;
+                padding: 6px 10px;
+                max-height: 140px;
+            }
+            .card-back .card-actions .action-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+            .modal-box {
+                padding: 16px 14px 12px;
+            }
+            .modal-box .modal-title {
+                font-size: 16px;
+            }
+            .modal-box .modal-body {
+                font-size: 12px;
+                padding: 10px 12px;
+            }
+            .modal-box .modal-actions button {
+                font-size: 12px;
+                padding: 6px 16px;
+            }
+            .shortcut-toast {
+                font-size: 10px;
+                padding: 6px 12px;
+                max-width: 96%;
+                line-height: 1.5;
+            }
+            .shortcut-toast kbd {
+                font-size: 10px;
+                padding: 0 6px;
+            }
+            .toast-export-icon {
+                width: 14px;
+                height: 14px;
+            }
+            .toast-export-icon svg {
+                width: 14px;
+                height: 14px;
+            }
+            .backup-section {
+                gap: 8px;
+                flex-wrap: nowrap;
+            }
+            .backup-btn {
+                padding: 4px 12px;
+                font-size: 12px;
+            }
+            .backup-divider {
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 360px) {
+            .header .title {
+                font-size: 13px;
+                letter-spacing: 0.3px;
+            }
+            .header .right-group .day-label {
+                font-size: 10px;
+            }
+            .header .right-group .search-wrap {
+                width: 85px;
+                min-width: 70px;
+                max-width: 85px;
+                padding: 0 2px 0 4px;
+                height: 24px;
+            }
+            .header .right-group .search-input {
+                font-size: 9px;
+                min-width: 14px;
+            }
+            .header .right-group .search-clear {
+                width: 18px;
+                height: 18px;
+                min-width: 18px;
+                min-height: 18px;
+                font-size: 11px;
+            }
+            .header .right-group .taiji-btn {
+                width: 22px;
+                height: 22px;
+            }
+            .header .right-group .taiji-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+            .header .right-group {
+                gap: 3px;
+            }
+        }
+        @media (min-width: 769px) {
+            .app-container {
+                max-width: 500px;
+                padding: 24px 22px 24px;
+            }
+            .card-front .word-list {
+                font-size: clamp(18px, 2.8vw, 28px);
+            }
+            .dashboard {
+                padding: 12px 18px;
+            }
+            .watermark {
+                font-size: 157px;
+            }
+            .card {
+                min-height: 300px;
+                max-height: 820px;
+            }
+            .card.flipped {
+                min-height: 300px;
+                max-height: 820px;
+            }
+            .card-front,
+            .card-back {
+                padding: 24px 22px;
+            }
+            .card-back .analysis {
+                max-height: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 快捷键弹窗 ===== -->
+    <div class="shortcut-toast" id="shortcutToast"></div>
+
+    <!-- ===== 模态框（日报） ===== -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-box">
+            <div class="modal-title" id="reportModalTitle">今日学习日报</div>
+            <div class="modal-body" id="reportBody">
+                <div class="report-text" id="reportText">加载中...</div>
+            </div>
+            <div class="modal-actions">
+                <button class="success" id="copyReportBtn">复制</button>
+                <button class="secondary" id="closeReportBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 模态框（导出标记） ===== -->
+    <div class="modal-overlay" id="exportModal">
+        <div class="modal-box">
+            <div class="modal-title" id="exportModalTitle">◆ 辨析闪卡 · 标记导出</div>
+            <div class="modal-body" id="exportBody">
+                <div class="report-text" id="exportText" style="font-size:12px;white-space:pre-wrap;word-break:break-all;max-height:320px;overflow-y:auto;width:100%;text-align:left;padding:4px 0;">加载中...</div>
+            </div>
+            <div class="modal-actions">
+                <button class="success" id="copyExportBtn">复制</button>
+                <button class="secondary" id="closeExportBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="app">
+
+        <!-- ===== 水印「笃」 ===== -->
+        <div class="watermark" style="font-family:'STSong','Songti SC','Noto Serif SC','SimSun','宋体',serif !important;">笃</div>
+
+        <!-- ===== 无痕提示 ===== -->
+        <div class="private-tip" id="privateTip">
+            <span class="tip-icon-wrap">!</span>
+            <span class="tip-text" id="tipText">请勿使用无痕模式；清除浏览器数据会丢失收藏、错题标记</span>
+        </div>
+
+        <!-- ===== 标题栏 ===== -->
+        <div class="header">
+            <span class="title" id="appTitle" style="font-family:'STSong','Songti SC','Noto Serif SC','SimSun','宋体',serif !important;">英语单词 · 辨析闪卡</span>
+            <div class="right-group">
+                <span class="day-label" id="dayLabel">DAY105</span>
+                <button class="taiji-btn" id="styleToggle" title="切换明暗">
+                    <svg class="taiji-light" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M12 2A10 10 0 0 1 12 22A5 5 0 0 1 12 12A5 5 0 0 0 12 2" fill="currentColor"/>
+                    </svg>
+                    <svg class="taiji-dark" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M12 2A10 10 0 0 1 12 22A5 5 0 0 1 12 12A5 5 0 0 0 12 2" fill="currentColor"/>
+                    </svg>
+                </button>
+                <span class="search-wrap">
+                    <span class="search-icon">⌕</span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="搜索...">
+                    <button class="search-clear" id="searchClear" aria-label="清空搜索">✕</button>
+                </span>
+            </div>
+        </div>
+
+        <!-- ===== 状态栏 ===== -->
+        <div class="status-bar" id="statusBar">
+            <span class="mode-label" id="modeLabelStatus">当前：<span class="highlight">全部</span> · <span id="currentTabLabel">形近词</span></span>
+            <div class="stats">
+                <span class="stat-item">共 <span class="num" id="statTotal">0</span> 张</span>
+                <span class="stat-item"><span class="star-symbol">★</span> <span class="num fav-num" id="statFav">0</span></span>
+                <span class="stat-item">✕ <span class="num wrong-num" id="statWrong">0</span></span>
+                <!-- 原有导出错题按钮（保留） -->
+                <button class="export-btn" id="exportBtn" title="导出错题标记">
+                    <svg viewBox="0 0 28 28" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                        <line x1="10" y1="4" x2="18" y2="4" stroke="currentColor" stroke-width="4.5"/>
+                        <path d="M14 8 L14 22 M10 13 L14 8 L18 13" stroke="currentColor" stroke-width="4.5" fill="none"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- ===== 仪表盘 ===== -->
+        <div class="dashboard" id="dashboard">
+            <div class="item"><span class="label">阶段：</span><span class="value" id="dashPhase">—</span></div>
+            <div class="item"><span class="label">进度：</span><span class="value" id="dashProgress">0 / 0</span></div>
+            <div class="item"><span class="label">今日新词：</span><span class="value" id="dashNewStatus">—</span></div>
+            <div class="item"><span class="label">错题复盘：</span><span class="value" id="dashWrong">0</span></div>
+            <div class="trend" id="dashTrend">近7天：0, 0, 0, 0, 0, 0, 0</div>
+            <div class="progress-row">
+                <span class="progress-label" id="progressLabel">0%</span>
+                <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%;"></div></div>
+            </div>
+        </div>
+
+        <!-- ===== Tab 栏 ===== -->
+        <div class="tab-bar" id="tabBar"></div>
+
+        <!-- ===== 卡片 ===== -->
+        <div class="card-wrapper">
+            <div class="card" id="card">
+                <div class="card-front" id="cardFront">
+                    <div class="word-list" id="wordList"></div>
+                    <div class="hint">双击翻转</div>
+                    <div class="lock-overlay hidden" id="lockOverlay">
+                        <div class="lock-icon">🔒</div>
+                        <div>今日新词已满</div>
+                        <div class="lock-sub">请明天再来</div>
+                    </div>
+                    <div class="empty-state hidden" id="emptyState">
+                        <div class="empty-icon">◻</div>
+                        <div id="emptyMsg">暂无卡片</div>
+                        <div class="empty-sub" id="emptySub">刷题时点击收藏按钮加入</div>
+                    </div>
+                </div>
+                <div class="card-back" id="cardBack">
+                    <div id="backContent"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 底部原操作区 ===== -->
+        <div class="bottom-row">
+            <div class="left-group">
+                <button class="mode-toggle" id="modeToggle">
+                    <span id="modeLabel">严格</span>
+                    <span class="dot strict" id="modeDot"></span>
+                </button>
+                <button class="icon-btn" id="favBtn" title="收藏列表">★</button>
+                <button class="icon-btn" id="wrongBtn" title="错题列表">✕</button>
+                <button class="icon-btn" id="resetBtn" title="复习队列">↺</button>
+                <button class="icon-btn death" id="deathBtn" title="地狱模式"></button>
+                <button class="report-btn" id="reportBtn" title="日报">☰</button>
+                <button class="reset-btn" id="resetRecordsBtn" title="重置刷题记录">⟳</button>
+            </div>
+            <span class="footer-saying" style="font-family:'STSong','Songti SC','Noto Serif SC','SimSun','宋体',serif !important;">事以密成 · 一鸣惊人</span>
+        </div>
+
+        <!-- ===== 新增独立备份按钮组 ===== -->
+        <div class="backup-section">
+            <button class="backup-btn" id="exportBackupBtn">▲ 出</button>
+            <span class="backup-divider">|</span>
+            <button class="backup-btn" id="importBackupBtn">▼ 入</button>
+        </div>
+
+        <!-- 隐藏文件选择器用于导入 -->
+        <input type="file" id="fileInput" accept=".json" style="display:none">
+
+    </div>
+
+    <script>
+        // ============================================================
+        // 全局配置
+        // ============================================================
+        const APP_CONFIG = {
+            title: '英语单词 · 辨析闪卡',
+            storageNamespace: 'default',
+        };
+
+        // ============================================================
+        // 原始词库数据（320组清洗合并词库）
+        // ============================================================
+        const RAW_DATA = `
+        【词根词缀】
+        fer-｜词根｜携带、拿｜带来、转移、推断、忍受｜transfer, infer, prefer
+        spect-｜词根｜看｜观察、审视、展望｜inspect, prospect, retrospective
+        dict-｜词根｜说｜断言、指示、预言｜predict, dictate, verdict
+        duct-｜词根｜引导｜传导、诱使、行为｜conduct, introduce, produce
+        ject-｜词根｜投掷｜投射、拒绝、插入｜project, reject, inject
+        port-｜词根｜搬运｜输送、承载、举止｜export, transport, deport
+        press-｜词根｜压｜压迫、表达、印刷｜impress, suppress, compress
+        tract-｜词根｜拉、拖｜吸引、收缩、抽取｜attract, contract, extract
+        vert-｜词根｜转｜转换、颠倒、转向｜convert, divert, avert
+        mit-｜词根｜发送｜传递、发射、允许｜transmit, emit, permit
+        pose-｜词根｜放置｜构成、暴露、假设｜compose, expose, impose
+        pre-｜前缀｜预先｜之前、提前、在前｜preview, precede, predict
+        re-｜前缀｜再次、回｜反向、重复、恢复｜revise, recall, restore
+        inter-｜前缀｜在…之间｜相互、交互、间隔｜interact, interfere, interrupt
+        sub-｜前缀｜在下、从下｜次要、低于、潜藏｜submit, subscribe, substitute
+        trans-｜前缀｜横穿、越过｜转变、转移、超越｜transfer, transform, transport
+        bene-｜前缀｜好、善｜有益、仁慈、祝福｜benefit, benevolent, benign
+        -ous｜后缀｜具有…性质的｜充满…的、多…的｜dangerous, vigorous, ambitious
+        -ify｜后缀｜使成为…｜使…化、导致｜purify, amplify, intensify
+        -ism｜后缀｜…主义、…行为｜学说、制度、特征｜criticism, optimism, mechanism
+        over-｜前缀｜过度、在上｜超过、忽视、克服｜overestimate, overlook, overcome
+        vis-｜词根｜看｜视觉、审视、可见｜visible, vision, visual
+        struct-｜词根｜建造｜构造、组织、指导｜structure, construct, instruct
+        audi-｜词根｜听｜听觉、听众｜audience, audio, audit
+        bio-｜词根｜生命｜生物、生活、传记｜biology, biography, biological
+        flu-｜词根｜流｜流动、流畅、影响｜fluent, fluid, influence
+        cred-｜词根｜相信｜信用、可信、难以置信｜credit, credible, incredible
+        fac-｜词根｜做、制造｜事实、能力、促进｜factory, faculty, facilitate
+        gen-｜词根｜产生、起源｜生成、种族、基因｜generate, generation, genetic
+        grad-｜词根｜步、级｜逐步、下降、毕业｜graduate, gradual, degrade
+        rupt-｜词根｜破｜中断、爆发、腐败｜rupture, interrupt, corrupt
+        scrib-｜词根｜写｜描述、规定、订阅｜describe, prescribe, subscribe
+        sens-｜词根｜感觉｜感觉、敏感、理智｜sense, sensitive, sensible
+        vac-｜词根｜空｜空缺、真空、疏散｜vacant, vacuum, evacuate
+        pel-｜词根｜推｜迫使、驱逐、推进｜compel, expel, propel
+        path-｜词根｜感情、病｜同情、共情、冷漠｜sympathy, empathy, apathy
+        counter-｜前缀｜反对、对应｜相反、抵消、对应物｜counteract, counterbalance, counterpart
+        de-｜前缀｜向下、否定｜下降、减少、剥夺｜decline, decrease, deprive
+        dis-｜前缀｜否定、分离｜消失、区分、分配｜disappear, distinguish, distribute
+        ex-｜前缀｜向外、出｜排除、暴露、扩展｜exclude, expose, expand
+        cur-｜词根｜跑｜发生、流动、流通｜occur, current, currency
+        nov-｜词根｜新｜新奇、创新、革新｜novel, innovate, innovation
+        ann/enn-｜词根｜年｜年份、周年、永久｜annual, anniversary, eternal
+        chron-｜词根｜时间｜时序、同步、延迟｜chronic, chronological, synchronize
+        tele-｜词根｜远｜远程、电视、通信｜telescope, telegraph, television
+        geo-｜词根｜地球｜地理、地质、几何｜geography, geology, geometric
+        equ-｜词根｜相等｜平等、等价、足够｜equal, equity, adequate
+        magn-｜词根｜大｜宏大、放大、壮丽｜magnitude, magnify, magnificent
+        uni-｜词根｜一｜统一、单一、独特｜unite, uniform, unique
+        form-｜词根｜形状、形式｜改革、符合、形成｜reform, conform, uniform
+        fin-｜词根｜结束、边界｜限定、无限、定义｜define, finite, infinite
+        leg-｜词根｜读、法律｜合法、立法、正当｜legal, legislation, legitimate
+        loc-｜词根｜地方｜定位、安置、本地｜local, locate, location
+        manu-｜词根｜手｜手工、制造、手稿｜manual, manufacture, manuscript
+        ment-｜词根｜思考、心智｜精神、提及、心智的｜mental, mention, mentality
+        mot-｜词根｜移动｜动机、激励、运动｜motivate, motion, motive
+        nat-｜词根｜出生｜天性、本土、国家｜nature, native, nation
+        opt-｜词根｜选择｜选择、可选、乐观的｜option, optional, optimistic
+        pend-｜词根｜悬挂、支付｜依靠、悬挂、暂停｜depend, independent, suspend
+        sol-｜词根｜单独｜唯一、孤立、独自｜sole, isolate, solitary
+        fract-/frag-｜词根｜打破｜破碎、片段、脆弱｜fraction, fragment, fragile
+        act-｜词根｜做、行动｜行为、互动、反应｜action, interact, react
+        ag-｜词根｜做、推动｜代理、议程、灵活｜agent, agenda, agile
+        alter-｜词根｜其他、改变｜变更、选择、交替｜alter, alternative, alternate
+        am-｜词根｜爱｜爱好、友好、和善｜amiable, amateur, amicable
+        anim-｜词根｜生命、精神｜生气、一致、动物｜animal, unanimous, animate
+        apt-｜词根｜适应、适合｜适应、能力、调整｜adapt, aptitude, adopt
+        art-｜词根｜技艺、连接｜人工、巧妙、文章｜artificial, artisan, articulate
+        astro-｜词根｜星星｜宇宙、天文、航天｜astronomy, astronaut, astrology
+        civ-｜词根｜公民｜文明、文职、民用｜civil, civilian, civilization
+        clar-｜词根｜清楚｜宣布、澄清、明净｜declare, clarify, clear
+        clin-｜词根｜倾斜｜倾向、衰退、临床｜incline, decline, clinical
+        clud-/clus-｜词根｜关闭｜包括、排除、结论｜include, exclude, conclude
+        cord-｜词根｜心｜一致、记录、协调｜accord, record, discord
+        crit-｜词根｜判断｜批评、关键、标准｜criticize, critical, criterion
+        cult-｜词根｜耕种、培养｜文化、培养、信仰｜culture, cultivate, cult
+        cycl-｜词根｜圆、环｜循环、周期、自行车｜cycle, recycle, encyclopedia
+        dem-｜词根｜人民｜民主、人口、流行｜democracy, demographic, epidemic
+        dom-｜词根｜家、统治｜主宰、领地、驯服｜domestic, dominate, domain
+        dur-｜词根｜持续｜期间、持久、忍受｜during, duration, endure
+
+        【熟词僻义】
+        1. address｜地址｜解决、处理；向……发表演讲｜搭配 address the problem/issue
+        2. check｜检查｜控制、抑制｜搭配 keep/hold...in check，check the spread
+        3. novel｜小说｜新颖的、新奇的｜搭配 novel approach/idea
+        4. secure｜安全的｜获得、争取到；使牢固｜搭配 secure a job，secure efficiency
+        5. weather｜天气｜经受住，平安度过（困境）｜搭配 weather the crisis/storm
+        6. want｜想要｜缺乏、不足｜搭配 want for（缺乏）
+        7. minute｜分钟｜微小的、细微的｜搭配 minute details
+        8. interest｜兴趣｜利益；利息｜搭配 public interest，interest rate
+        9. develop｜发展；开发｜患（病）；形成｜搭配 develop depression/infection
+        10. reason｜理由；原因｜推理、推论；与……讲道理｜搭配 reason with sb.
+        11. practice｜练习；实践｜惯例、常规做法｜搭配 common/standard practice
+        12. ground｜地面｜根据、理由（常用复数 grounds）｜搭配 grounds for，on the grounds of
+        13. process｜过程；程序｜加工、处理（文件/数据等）｜搭配 process information/data
+        14. current｜当前的；目前的｜水流、洋流；电流｜搭配 ocean current
+        15. remain｜保持；剩余｜遗迹、残余物（复数 remains）｜搭配 ancient remains
+        16. coin｜硬币｜创造（新词、新概念）｜搭配 coin a term/phrase
+        17. level｜水平；层面｜使平稳（level out/off）；夷平｜搭配 level out for a period
+        18. structure｜结构；构造｜建筑物｜搭配 ancient structures
+        19. employ｜雇用｜使用、运用｜搭配 employ methods/techniques
+        20. tap｜轻拍；水龙头｜开发、利用（资源、市场等）｜搭配 tap the consumer market，tap resources
+        21. exploit｜剥削｜开发、利用（资源、潜力等）｜搭配 exploit natural resources，exploit potential
+        22. engage｜参与；雇佣｜吸引（注意力/兴趣）；与……交战｜搭配 engage readers，engage the enemy
+        23. afford｜买得起｜提供、给予｜搭配 afford sb. an opportunity，afford shade
+        24. observe｜观察｜遵守（规则/法律）；评论、说｜搭配 observe the rules，observe that...
+        25. betray｜背叛｜暴露、显示（情感/身份等）｜搭配 betray one's origin，betray emotion
+        26. entertain｜娱乐｜怀有（想法/疑虑）；考虑｜搭配 entertain doubts，entertain a proposal
+        27. cultivate｜种植；培养｜结交（朋友）；争取（支持）｜搭配 cultivate voters，cultivate relationships
+        28. brand｜品牌｜谴责；给……贴上标签｜搭配 be branded as...（被污名化为……）
+        29. produce｜生产｜引起、产生（影响/结果）｜搭配 produce a profound effect，produce changes
+        30. article｜文章｜物品；条款｜搭配 household articles，articles of the treaty
+        31. trade｜贸易｜职业、行业（a trade）；手艺｜搭配 learn a trade，skill in a trade
+        32. effort｜努力｜（有组织的）活动、行动；成就｜搭配 relief effort，rescue effort
+        33. about｜关于｜忙于、从事（be about）｜搭配 What are you about?（你在忙什么？）
+        34. save｜拯救；节省｜除了……之外（介词/连词）｜搭配 save for...（除了……之外）
+        35. moral｜道德的｜寓意（the moral of the story）｜搭配 the moral of the story
+        36. bill｜账单；法案｜宣传为（bill sth. as...）；用海报宣传｜搭配 be billed as...（被宣传为……）
+        37. harness｜马具｜利用（能源/才能）；驾驭｜搭配 harness resources，harness technology
+        38. serve｜服务；上菜｜对……有用；满足（目标/利益）｜搭配 serve the current goal，serve one's interests
+        39. accommodate｜留宿；容纳｜使适应、顺应（变化/需求）｜搭配 accommodate to changes，accommodate new demands
+        40. harbor｜港口｜怀有、心存（想法、感情等）｜搭配 harbor doubts，harbor resentment
+        41. nurse｜护士；护理｜培育、培养；怀有（想法、情绪）｜搭配 nurse a grudge，nurse the economy back to health
+        42. extraction｜提取、开采｜血统、族裔（of...extraction）｜搭配 of European extraction
+        43. consume｜消费、消耗｜吞噬、烧毁｜搭配 fire consumed the building
+        44. contract｜合同、契约｜（使）收缩、缩小｜搭配 muscles contracted
+        45. benefit｜好处、利益｜得益于（benefit from）；救济金｜搭配 benefit from the policy
+        46. argue｜争论、辩论｜主张、论证；说服｜搭配 argue that...，argue sb. into/out of
+        47. game｜游戏、比赛｜猎物｜搭配 easy game（易捕的猎物）
+        48. spell｜拼写｜招致、意味着（spell disaster/failure）｜搭配 spell the death of...
+        49. appreciate｜欣赏、感激｜增值、升值｜搭配 appreciate in value
+        50. hail｜下冰雹｜赞扬、称颂（hail...as...）｜搭配 be hailed as a success
+        51. house｜房子｜容纳、收容｜搭配 house the collection
+        52. chair｜椅子｜主持、担任主席｜搭配 chair a meeting/department
+        53. table｜桌子｜提交（议案等讨论）；搁置｜搭配 table a proposal
+        54. body｜身体｜团体、机构；大量｜搭配 a body of evidence，professional body
+        55. climate｜气候｜风气、思潮、环境｜搭配 political/economic climate
+        56. shape｜形状｜塑造、影响｜搭配 shape one's character
+        57. story｜故事｜楼层（stor(e)y）；情况｜搭配 an entirely different story
+        58. sound｜声音｜健全的、合理的；酣睡的｜搭配 sound judgment
+        59. measure｜测量｜措施、法案（常用复数 measures）｜搭配 take measures，safety measures
+        60. press｜按压；压力｜出版社；报刊、新闻界（the press）；紧迫的（pressing）｜搭配 freedom of the press，a press conference
+        61. stem｜茎、干｜源于（stem from）；阻止、遏制（stem the tide）｜搭配 stem from poverty，stem the flow
+        62. sustain｜维持、支撑｜遭受、经受（sustain damage/loss）｜搭配 sustain injuries，sustain a defeat
+        63. strike｜打击、撞击｜突然想到（strike sb. as...）；罢工｜搭配 it strikes me that...，go on strike
+        64. couch｜长沙发｜表达、措辞（couch in）｜搭配 be couched in polite terms
+        65. cast｜投掷、抛｜演员阵容（cast of characters）；铸造｜搭配 the cast of the play，cast a statue
+        66. fold｜折叠｜羊圈、畜栏（a fold of sheep）｜搭配 bring the sheep back to the fold
+        67. spring｜春天｜泉水；发源、涌现（spring from）｜搭配 hot spring，spring from childhood experience
+        68. bank｜银行｜依靠、指望（bank on）；河岸｜搭配 bank on sb.'s support
+        69. court｜法庭、法院｜讨好、献殷勤（court favor）；球场｜搭配 court public opinion
+        70. forward｜向前的、前进的｜转交、发送（forward an email）；促进｜搭配 forward a message，forward the plan
+        71. means｜方法、手段｜财富、收入（a man of means）｜搭配 private means，live beyond one's means
+        72. scale｜规模；秤｜攀登（scale a mountain）；按比例缩｜搭配 scale the peak，scale down
+        73. subject｜主题、科目｜受试者、实验对象；使遭受（subject to）｜搭配 test subjects，subject to criticism
+        74. term｜学期；术语｜条款、条件（terms）；付款期限｜搭配 terms of agreement，on equal terms
+        75. volume｜音量；体积｜卷、册（a volume of poetry）；大量（volumes of）｜搭配 a companion volume，volumes of data
+        76. render｜使成为；给予｜提供、递交（render assistance）；翻译（render into）｜搭配 render service，render an opinion
+        77. compound｜化合物；复合物｜加重、恶化（compound a problem）；混合｜搭配 compound the difficulty，compound interest
+        78. contain｜包含、容纳｜抑制、控制（contain one's anger/fire）｜搭配 contain the outbreak，contain oneself
+        79. resort｜度假胜地｜求助、采取（resort to）；常去之地｜搭配 resort to force，the last resort
+        80. feature｜特征、特点｜以……为特色；由……主演｜搭配 feature prominently，the film features...
+
+        【近义词】
+        maintain｜维持；坚称
+        assert｜断言；主张
+        claim｜声称；要求
+        allege｜（无证据地）断言，指控
+        辨析：maintain强调坚持并维护既有观点；assert侧重自信地断言，不顾反对；claim指向对方要求承认权利或事实；allege指缺乏充分证据的宣称，多用于法律/新闻语境。
+
+        【近义词组】
+        affect｜影响（多指直接或负面）
+        influence｜影响（潜移默化，侧重行为/思想）
+        impact｜冲击性影响（常与on搭配，强调强烈）
+        辨析：affect侧重产生可观察的变化，常为直接不利；influence侧重间接、长期地改变思维或行为；impact强调强烈冲击或碰撞性效果，常用作名词或动词。
+
+        【近义词组】
+        comply｜遵守（要求、规定，搭配with）
+        conform｜符合、遵守（规则/标准，搭配to/with）
+        adhere｜坚持、遵守（原则/信念，搭配to）
+        辨析：comply指服从指令或法律要求；conform指与既定规范、标准一致；adhere指主动固守原则或信念，语气较正式。
+
+        【近义词组】
+        confine｜限制（活动/空间，划定界限）
+        restrict｜限制（缩小范围，数量/权利）
+        restrain｜抑制、约束（控制行为/情绪，搭配from）
+        constrain｜强迫、约束（外部压力迫使，常用于被动）
+        辨析：confine侧重使不超出特定范围；restrict侧重保持在限度内；restrain侧重阻止已有冲动；constrain侧重外部强制带来的被动限制。
+
+        【近义词组】
+        ensure｜确保（使结果有保障）
+        guarantee｜保证（明确承诺，法律担保）
+        assure｜向…保证（使放心，搭配sb of/that）
+        insure｜给…保险（经济赔偿）
+        辨析：ensure强调动作直接保障结果；guarantee侧重正式或法律承诺；assure侧重消除对方疑虑，后接人；insure限于保险业务或预防经济损失。
+
+        【近义词组】
+        conserve｜保存、节约（资源/能源，避免浪费）
+        preserve｜保存、保藏（维持原状，防变质/破坏）
+        reserve｜预订、保留（留出以备后用）
+        辨析：conserve重在合理利用、不浪费；preserve重在保持完好、不受损害；reserve重在预先留存供未来使用。
+
+        【近义词组】
+        adapt｜适应、改编（因新环境而改变，接to）
+        adjust｜调整、适应（微调使合适，接to）
+        accommodate｜适应、容纳（调节以顺应，接to）
+        辨析：adapt强调为适应新用途而做较大改变；adjust强调细微调节；accommodate强调顺应外部要求或调节差异，也含“容纳”义。
+
+        【近义词组】
+        alter｜改变（局部变化，不改变本质）
+        modify｜修改、调整（改进性修正）
+        convert｜转换、转变（形式/用途/信仰的根本改变）
+        transform｜彻底改变（外观/性质/结构的剧变）
+        辨析：alter侧重小幅度变化；modify侧重修正改进；convert侧重功能或信仰转变；transform侧重深刻、全面质变。
+
+        【近义词组】
+        decline｜婉拒；下降（客气地不接受）
+        reject｜拒绝（坚决不接受，驳回）
+        deny｜否认；拒绝给予（否定事实或拒绝赋予）
+        辨析：decline侧重礼貌谢绝邀请或建议；reject侧重强烈不接受或抛弃；deny侧重否定真实性，或拒绝给予权利/要求。
+
+        【近义词组】
+        neglect｜疏忽、忽略（未尽责任，因粗心）
+        ignore｜无视、不顾（故意不理睬）
+        overlook｜忽视、忽略（无意漏看；也可指宽容）
+        omit｜省略、遗漏（删去或漏掉内容）
+        辨析：neglect强调未给予应有照顾；ignore强调有意不理会；overlook强调因匆忙未注意到；omit强调内容缺失或删去。
+
+        【近义词组】
+        exceed｜超过（数量/限度）
+        surpass｜超过、胜过（水平/质量上超越）
+        transcend｜超越（经验/范围/界限，抽象）
+        辨析：exceed多指数量、限度上超过；surpass指在成绩、技能上优于；transcend指超越经验或抽象范围，语气较强。
+
+        【近义词组】
+        consequence｜结果、后果（常暗示不良或重大）
+        result｜结果（最中性，由前因直接引起）
+        outcome｜结局（过程结束后的最终结果）
+        辨析：consequence侧重因果逻辑，常含负面；result强调前因的直接效果；outcome强调最终结局，多用于活动或竞争。
+
+        【近义词组】
+        symptom｜症状、征兆（疾病/问题表象）
+        sign｜迹象、标志（客观可见标记）
+        indication｜迹象、指示（显示某事的抽象线索）
+        evidence｜证据、迹象（支持判断的根据，较正式）
+        辨析：symptom多指疾病或社会问题的表象；sign最宽泛，可观察；indication较抽象，暗示存在某事；evidence强调作为判断依据。
+
+        【近义词组】
+        tradition｜传统（历史传承）
+        convention｜惯例、习俗（社会公认规范）
+        custom｜习俗、惯例（群体长期行为）
+        practice｜惯例、做法（实际执行的方法）
+        辨析：tradition侧重文化和历史延续；convention侧重社会约定俗成；custom侧重群体长期形成的习惯；practice侧重实际施行的做法，未必传统。
+
+        【近义词组】
+        duty｜责任、义务（道德/岗位要求）
+        obligation｜义务（法律/承诺约束，强制）
+        responsibility｜责任（对后果负责）
+        liability｜责任；债务（法律责任或不利因素）
+        辨析：duty强调内在应做之事；obligation强调外在约束如法律或承诺；responsibility强调对行为后果负责；liability强调法律赔偿责任，常含负面。
+
+        【近义词组】
+        prejudice｜偏见（先入为主，常不公，贬义）
+        bias｜偏向、偏见（倾向性，可中性）
+        discrimination｜歧视（区别对待，尤指不公，贬义）
+        stereotype｜刻板印象（简单化固定观念）
+        辨析：prejudice侧重未经理性判断的成见；bias侧重倾向或偏好，可中性；discrimination侧重因种族/性别等不公平对待；stereotype侧重过度简化、固定化的看法。
+
+        【近义词组】
+        implement｜实施、执行（将计划付诸实践）
+        execute｜执行（按计划/命令操作）
+        enforce｜强制执行（使法律/规则生效）
+        administer｜管理、执行（实施管理或给予）
+        辨析：implement强调将方案落实；execute强调按具体指令操作；enforce强调借助权威强制服从；administer强调管理性执行，也用于给予药物/法律。
+
+        【近义词组】
+        evident｜明显的（有证据支持）
+        apparent｜明显的；表面上的（表面明显，可能不实）
+        conspicuous｜显眼的（因突出而引人注目）
+        manifest｜显而易见的（清楚、正式，不容否认）
+        辨析：evident侧重事实依据；apparent侧重表面看来明显，可能掩饰真实；conspicuous侧重显眼突出；manifest侧重清楚明白，正式书面语。
+
+        【近义词组】
+        induce｜引起、诱导（尤指药物/劝说导致）
+        prompt｜促使、激起（迅速引发行动，接sb to do）
+        stimulate｜刺激、激发（激发活力/兴趣，积极）
+        provoke｜激起、挑衅（引发强烈反应，常贬义）
+        辨析：induce强调通过诱因导致结果；prompt强调及时促使行动；stimulate强调激发积极性；provoke强调引发愤怒或争议等强烈情绪。
+
+        【近义词组】
+        transient｜短暂的、转瞬即逝（存在时间极短）
+        temporary｜临时的、暂时的（相对永久，有限期）
+        momentary｜片刻的、瞬间的（只持续一刹那）
+        fleeting｜飞逝的、短暂的（快速消逝，感情色彩强）
+        辨析：transient强调短暂易变；temporary强调非永久、有期限；momentary强调极短时间；fleeting强调迅速消逝，带有感伤色彩。
+
+        【近义词组】
+        decrease｜减少（数量、程度下降）
+        diminish｜减少；减弱（渐小，重要性降低）
+        dwindle｜逐渐减少（趋于消失，常指资源）
+        辨析：decrease泛指数量或程度下降；diminish强调逐渐变小或削弱，可指重要性；dwindle强调逐步缩小直至接近消失，多用于数量、资源。
+
+        【近义词组】
+        acquire｜获得（知识、技能等，靠努力）
+        obtain｜获得（经努力或请求得到）
+        attain｜达到；获得（目标、成就）
+        secure｜获得（尤指困难后确保得到）
+        辨析：acquire侧重通过学习或体验获得抽象事物；obtain侧重通过努力或请求得到具体物；attain侧重达到目标或水平；secure侧重克服困难后确保获得，常含“争取得来”。
+
+        【近义词组】
+        abandon｜放弃；遗弃（彻底丢弃）
+        desert｜抛弃；离弃（违背责任或忠诚）
+        forsake｜放弃；遗弃（情感上断绝，正式）
+        辨析：abandon侧重完全放弃责任或控制；desert侧重背离职责或誓言，含背弃；forsake侧重与某人或某物断绝关系，多用于文学语境。
+
+        【近义词组】
+        hinder｜阻碍（造成延迟或困难，搭配from）
+        hamper｜妨碍（束缚、干扰，使行动不便）
+        impede｜阻碍（进度或运动受阻，较正式）
+        obstruct｜阻塞（物理或抽象通道，主动阻挡）
+        辨析：hinder强调设置障碍导致延误；hamper强调外力束缚使操作困难；impede强调进展受阻；obstruct强调直接阻挡通道或视线。
+
+        【近义词组】
+        strengthen｜加强（力量、体制，使更坚固）
+        reinforce｜加强（增援、加固，加厚或补充）
+        enhance｜提高；增强（质量、价值、吸引力）
+        辨析：strengthen侧重使结构或力量更强大；reinforce侧重添加支持物以加强已有事物；enhance侧重提升品质或价值，不改变本质。
+
+        【近义词组】
+        weaken｜削弱（力量或效力下降）
+        undermine｜暗中破坏（削弱根基或权威）
+        impair｜损害（功能、价值，使其变差）
+        erode｜侵蚀；逐渐削弱（过程缓慢，常指信心/权利）
+        辨析：weaken泛指强度减弱；undermine侧重从根基处暗中破坏；impair强调导致功能下降或受损；erode强调缓慢而持续的侵蚀削弱。
+
+        【近义词组】
+        solve｜解决（找出答案或解法）
+        resolve｜解决（消除分歧或矛盾）
+        settle｜解决；安顿（平息争端，达成协议）
+        tackle｜处理；应对（着手解决难题）
+        辨析：solve多用于问题或谜题；resolve用于争端、疑虑，强调调和；settle强调最终达成协议结束纠纷；tackle强调主动勇敢地着手处理。
+
+        【近义词组】
+        support｜支持（观点、事业，给予帮助）
+        uphold｜支持；维护（原则、法律，使不倒下）
+        advocate｜提倡；主张（公开支持，接for或直接接名词）
+        辨析：support最广泛，可指物质或道义支持；uphold侧重维护传统、权利或法律；advocate侧重公开宣扬并主张某种理念。
+
+        【近义词组】
+        oppose｜反对（普遍用语，表示抵制）
+        resist｜抵抗；反抗（积极行动对抗外力）
+        defy｜违抗；蔑视（公开挑战权威）
+        withstand｜经受住（承受而不屈服，常与压力搭配）
+        辨析：oppose强调立场上的反对；resist强调主动反击或拒绝顺从；defy强调公然反抗权威；withstand强调被动承受而未被击垮。
+
+        【近义词组】
+        infer｜推断（根据证据推理，多作不及物接from）
+        deduce｜演绎推论（按逻辑严密推导）
+        conclude｜断定；得出结论（总结性推论）
+        gather｜推测；理解（根据线索推断，口语化）
+        辨析：infer侧重由已知推出未知；deduce侧重基于逻辑前提的必然结论；conclude侧重经过思考后作出最终判断；gather侧重从零散信息中获知，较非正式。
+
+        【近义词组】
+        emphasize｜强调（着重突出）
+        stress｜强调；着重（语气强，指重要性）
+        highlight｜突出；强调（使醒目，聚焦）
+        underline｜强调；画底线（强调重要性，较书面）
+        辨析：emphasize指通过语气或方式突出；stress侧重强调其重要性；highlight侧重使之引人注目；underline侧重使之鲜明突出，常为书面。
+
+        【近义词组】
+        avoid｜避免（有意躲开）
+        evade｜逃避（狡猾地躲避，常含贬义）
+        shun｜回避（刻意远离，因厌恶或恐惧）
+        辨析：avoid最常用，中性；evade强调用借口或手段回避责任/问题，常贬义；shun强调因反感而刻意避开社交或场合。
+
+        【近义词组】
+        endure｜忍受（长期苦难，强调持久）
+        tolerate｜容忍（允许存在，不反对，常指行为）
+        bear｜忍受（承担苦痛，常与can/cannot连用）
+        辨析：endure侧重长时间承受巨大困难；tolerate侧重宽容、不干预，常用于人或行为；bear侧重承担不适或痛苦，多用于否定句。
+
+        【近义词组】
+        distinguish｜区分（辨别差异，常接between或from）
+        differentiate｜区别（鉴别特征，强调差异点）
+        discern｜辨别；识别（靠敏锐洞察力分辨）
+        辨析：distinguish强调将不同事物分开；differentiate强调找出细微区别；discern强调凭感官或洞察力识别，常指困难事物。
+
+        【近义词组】
+        contain｜包含（容纳、含有内容）
+        include｜包括（作为一部分包含）
+        involve｜涉及；包含（必然关联）
+        encompass｜包含；涵盖（全部包罗，正式）
+        辨析：contain强调整体内有某物；include强调组成部分；involve强调牵涉或包含必要条件；encompass强调范围全面覆盖。
+
+        【近义词组】
+        compose｜组成（be composed of，强调构成）
+        consist｜组成（consist of，强调整体由部分构成）
+        constitute｜构成（部分组成整体，主语为部分）
+        comprise｜包含；组成（可整体包含部分或部分组成整体）
+        辨析：compose常用被动，强调组合过程；consist后接of，强调整体结构；constitute主语为构成部分，正式；comprise可互换用法，但更常表示整体包含部分。
+
+        【近义词组】
+        distribute｜分配（分发，散开）
+        allocate｜分配（划拨资源，指定用途）
+        assign｜指派（分配任务或职位）
+        allot｜分配（份额分给，按定额）
+        辨析：distribute侧重广泛分发；allocate侧重按计划拨出特定资源；assign侧重指定给某人任务或角色；allot侧重按比例或定额配给。
+
+        【近义词组】
+        extend｜延长（时间、空间，及物或不及物）
+        prolong｜延长（时间上拖长，尤指不必要）
+        lengthen｜加长（长度或时间，常指物理）
+        辨析：extend最通用，可指长度、时间或范围；prolong侧重主动延长持续时间，常带负面；lengthen侧重使长度变大，可指时间和空间。
+
+        【近义词组】
+        exaggerate｜夸大（超出实际）
+        overstate｜言过其实（过于强调）
+        magnify｜放大；夸大（使显得更大）
+        amplify｜放大；详述（扩大影响或音量）
+        辨析：exaggerate常用，指有意无意地夸张；overstate侧重用词过度，与事实不符；magnify侧重使重要性或程度放大；amplify侧重扩大细节或声音，可中性。
+
+        【近义词组】
+        refute｜反驳（用证据驳倒）
+        disprove｜证明为假（侧重反证）
+        rebut｜反驳（正式辩论，回应对方论点）
+        contradict｜与…矛盾；反驳（直接否定对方）
+        辨析：refute强调通过证据推翻；disprove强调证明某命题错误；rebut侧重正式答辩中回应；contradict强调公开声称相反，不一定有依据。
+
+        【近义词组】
+        acknowledge｜承认（公开认可事实或存在）
+        admit｜承认（不情愿地承认，常指错误）
+        confess｜承认；忏悔（坦白过错或隐私）
+        concede｜承认（让步后勉强承认，常指论点）
+        辨析：acknowledge侧重公开认可事实，中性；admit强调勉强承认，常带羞愧；confess指承认罪行或隐私，语气强；concede指在争论中被迫承认，含有让步意味。
+
+        【近义词组】
+        evaluate｜评估（确定价值或意义）
+        assess｜评估（估计数量或重要性，常为客观）
+        appraise｜评价（专业鉴定价值）
+        estimate｜估计（粗略推算，不精确）
+        辨析：evaluate侧重系统判断价值；assess侧重对情况或能力的估量；appraise侧重专业估价或评判；estimate侧重基于数据的粗略预测。
+
+        【近义词组】
+        promote｜促进（推动发展，提升）
+        facilitate｜使便利（减少障碍，使过程顺畅）
+        boost｜推动；提升（增强，增加）
+        accelerate｜加速（加快速度或进程）
+        辨析：promote强调支持增长；facilitate强调使流程更容易；boost强调使上升或提高；accelerate强调速度加快。
+
+        【近义词组】
+        prevent｜防止（阻止发生）
+        prohibit｜禁止（以法律/规定不允许）
+        forbid｜禁止（个人命令或规则，语气较强）
+        ban｜取缔（官方正式禁止）
+        辨析：prevent强调事前阻止；prohibit侧重法规或制度禁止；forbid侧重个人或家长权威；ban侧重官方明令取缔，常为公共行为。
+
+        【近义词组】
+        commence｜开始（正式、书面）
+        initiate｜发起（开创，使之启动）
+        launch｜启动（投入新产品/项目，声势大）
+        辨析：commence用于正式场合或仪式；initiate强调首次开创；launch强调首次公开推出，常用于产品、运动。
+
+        【近义词组】
+        explain｜解释（使理解，最通用）
+        interpret｜解释（解读含义，尤指语言或行为）
+        clarify｜阐明（消除模糊，使清晰）
+        辨析：explain宽泛，指阐述理由；interpret侧重对特定内容的理解；clarify强调使原本复杂或模糊的内容变得明了。
+
+        【近义词组】
+        argue｜争论（提出理由支持观点）
+        debate｜辩论（正式、正反双方交锋）
+        dispute｜争议；质疑（对事实或判断提出反对）
+        contend｜主张；争辩（坚称，往往在争论中）
+        辨析：argue强调理由说服；debate强调结构化对抗；dispute强调分歧和异议；contend强调立场坚定地维护观点。
+
+        【近义词组】
+        cause｜引起（直接导致结果）
+        generate｜产生（创造或发出，如能量、兴趣）
+        trigger｜触发（瞬间引发，常指连锁反应）
+        spark｜激发（引发，尤指火花式点燃）
+        辨析：cause是最直接原因；generate强调产生新事物；trigger强调一触即发；spark强调突然激发，多指情绪或事件。
+
+        【近义词组】
+        increase｜增加（数量、程度上升）
+        raise｜提高（使升高，多指等级或声音）
+        elevate｜提升（地位、水平，较正式）
+        augment｜增大（通过添加使增长）
+        辨析：increase最通用；raise强调从低到高；elevate强调抽象提升；augment强调通过补充或增加内容来扩大。
+
+        【近义词组】
+        reduce｜减少（使变小或降低）
+        lessen｜减轻（程度或强度降低）
+        abate｜减弱（风潮、声音等逐渐减退）
+        curtail｜削减（缩短或减少，常指开支、权力）
+        辨析：reduce泛指减少；lessen强调程度减轻；abate强调逐渐衰退；curtail强调缩减规模或期限，常含被迫意味。
+
+        【近义词组】
+        protect｜保护（防御伤害）
+        safeguard｜保护（采取措施确保安全）
+        shield｜保护（遮蔽，阻挡攻击）
+        defend｜保卫（抵御攻击，强调反击）
+        辨析：protect宽泛；safeguard强调预先防范；shield强调物理或抽象遮蔽；defend强调对抗性保护，常指防御。
+
+        【近义词组】
+        demonstrate｜展示（通过操作或证据说明）
+        illustrate｜说明（用例子或图画使明白）
+        exhibit｜展览；显示（公开展示，常为物品）
+        辨析：demonstrate强调证明或示范；illustrate强调用实例形象说明；exhibit强调公开陈列或显示特质。
+
+        【近义词组】
+        reveal｜揭露（使隐藏的显露）
+        disclose｜披露（公开秘密或信息）
+        expose｜暴露（使遭受或揭露丑闻）
+        辨析：reveal侧重无意或有意显露；disclose侧重公布隐秘信息；expose侧重揭露负面事物，使其曝光。
+
+        【近义词组】
+        consider｜考虑（思考以做决定）
+        contemplate｜深思（长期深入思考）
+        ponder｜沉思（仔细权衡）
+        deliberate｜慎重考虑（仔细商议，正式）
+        辨析：consider最常用；contemplate强调长时间关注；ponder强调反复思考；deliberate强调认真权衡，常用于群体商议。
+
+        【近义词组】
+        demand｜要求（强烈坚持，权威性）
+        require｜要求（依照规定或需要）
+        request｜请求（礼貌地请）
+        辨析：demand语气强硬，常含命令；require基于规则或必要性；request语气礼貌，有商榷余地。
+
+        【近义词组】
+        allow｜允许（不反对，默许）
+        permit｜允许（正式许可，含授权）
+        authorize｜授权（正式批准赋予权力）
+        sanction｜批准（官方认可）
+        辨析：allow中性，侧重不禁止；permit侧重规章上准予；authorize侧重权力下放；sanction侧重官方正式认可，可作动词。
+
+        【近义词组】
+        doubt｜怀疑（不相信，不确定）
+        suspect｜怀疑（猜测，倾向认为）
+        question｜质疑（对真实性提出疑问）
+        辨析：doubt侧重难以相信；suspect侧重有某种猜测；question侧重对事实提出挑战。
+
+        【近义词组】
+        differ｜不同（在特点上不一致）
+        vary｜变化（随情况而不同）
+        diverge｜分歧（意见或道路分叉）
+        辨析：differ强调本质不同；vary强调变化多样性；diverge强调从共同点分开，方向不同。
+
+        【近义词组】
+        collect｜收集（有目的地聚集）
+        accumulate｜积累（逐渐堆积）
+        amass｜积聚（大量积累，常指财富）
+        辨析：collect强调有选择地集中；accumulate强调长时间逐渐增加；amass强调大量聚集，常含财富或资料。
+
+        【近义词组】
+        compare｜比较（寻找异同）
+        contrast｜对比（强调差异）
+        辨析：compare侧重找相似和不同；contrast侧重突出差异，常搭配with。
+
+        【近义词组】
+        predict｜预测（未来事件）
+        forecast｜预测（天气、经济等）
+        foresee｜预见（未来情况）
+        anticipate｜预期（并做好准备）
+        辨析：predict最通用，强调对未来结果的推测；forecast侧重基于数据的预报；foresee强调直觉或洞见；anticipate强调预期并采取相应行动。
+
+        【近义词组】
+        convey｜传达（思想、感情）
+        communicate｜交流（信息）
+        transmit｜传送（信号、疾病）
+        辨析：convey侧重传递抽象内容；communicate强调双向交流；transmit侧重技术性传递或媒介传播。
+
+        【近义词组】
+        shift｜转移（位置、方向改变）
+        transfer｜转移（归属、地点转换）
+        remove｜移开；去除（从原位移走）
+        辨析：shift侧重轻微位置变化；transfer侧重系统或正式地转移；remove强调彻底拿走或消除。
+
+        【近义词组】
+        recover｜恢复（自身复原）
+        restore｜恢复（使回到原状）
+        revive｜复苏；重振（重新活跃）
+        辨析：recover多指身体或能力自愈；restore侧重外力使还原；revive侧重使重新焕发活力。
+
+        【近义词组】
+        consume｜消耗（资源、时间）
+        exhaust｜耗尽（完全用完）
+        deplete｜大量减少（储量、资源）
+        辨析：consume泛指消耗；exhaust强调彻底用光；deplete强调大幅削减，常含负面。
+
+        【近义词组】
+        damage｜损害（物、结构）
+        harm｜伤害（身心健康）
+        injure｜受伤（身体或情感）
+        辨析：damage多指有形物品；harm泛指伤害，可抽象；injure常指意外导致的身体创伤。
+
+        【近义词组】
+        examine｜检查（仔细查看）
+        inspect｜检查（正式、官方）
+        scrutinize｜仔细审查（深入细致）
+        辨析：examine最常用；inspect强调权威性检查；scrutinize强调极度细致，关注细节。
+
+        【近义词组】
+        explore｜探索（未知领域）
+        investigate｜调查（真相、原因）
+        probe｜探究（深入询问）
+        辨析：explore侧重开拓性探索；investigate侧重收集证据查明；probe侧重尖锐深入追问。
+
+        【近义词组】
+        supervise｜监督（指导性管理）
+        oversee｜监管（全面负责）
+        monitor｜监测（持续观察）
+        辨析：supervise侧重指导；oversee侧重宏观监管；monitor侧重长期跟踪记录。
+
+        【近义词组】
+        contribute｜贡献（提供帮助）
+        dedicate｜献身（倾注于事业）
+        devote｜专心投入（时间、精力）
+        辨析：contribute强调给予；dedicate强调承诺牺牲；devote强调专注投入，常接to。
+
+        【近义词组】
+        alleviate｜缓解（减轻痛苦）
+        mitigate｜缓和（减轻严重性）
+        relieve｜解除（不适、压力）
+        辨析：alleviate侧重缓解疼痛；mitigate侧重降低强度；relieve侧重暂时消除不适。
+
+        【近义词组】
+        confirm｜确认（证实真实性）
+        verify｜核实（检查准确性）
+        validate｜验证（使合法有效）
+        辨析：confirm强调确定性；verify强调通过证据核对；validate强调正式认可有效性。
+
+        【近义词组】
+        conceal｜隐藏（不暴露）
+        disguise｜伪装（掩盖真实）
+        辨析：conceal侧重藏匿事实；disguise侧重改变外表或说法以欺骗。
+
+        【近义词组】
+        criticize｜批评（指出缺点）
+        condemn｜谴责（严厉指责）
+        denounce｜公开抨击（正式声讨）
+        辨析：criticize中性；condemn语气强烈；denounce强调公开宣判，多涉道德问题。
+
+        【近义词组】
+        praise｜称赞（表达赞赏）
+        commend｜表扬（正式推荐称赞）
+        applaud｜赞许（公开鼓掌认可）
+        辨析：praise最通用；commend侧重正式肯定；applaud强调公众场合的认可。
+
+        【近义词组】
+        replace｜取代（永久替换）
+        substitute｜替代（临时替换）
+        displace｜取代（被迫更替）
+        辨析：replace指用新换旧；substitute指临时或权宜替代；displace强调因外力被迫替代。
+
+        【近义词组】
+        assume｜假设（认为当然）
+        presume｜推测（假定正确）
+        辨析：assume侧重无依据的承担；presume侧重基于可能性的推测，常接that。
+
+        【近义词组】
+        object｜反对（提出异议）
+        protest｜抗议（公开反对）
+        辨析：object强调理性反对；protest强调公开情绪化抗议。
+
+        【近义词组】
+        relate｜关联（有联系）
+        associate｜联想（在脑中连接）
+        connect｜连接（物理或逻辑）
+        辨析：relate侧重事实关系；associate侧重联想或人际关系；connect侧重直接链接。
+
+        【近义词组】
+        endorse｜支持（公开赞同）
+        approve｜批准（正式同意）
+        consent｜同意（允许，接to）
+        辨析：endorse强调公开背书；approve强调官方许可；consent强调允诺或授权。
+
+        【形近词】
+        principal｜主要的；校长 principle｜原则；原理 辨析：末尾倒数第二字母“a”（principal） vs “e”（principle）；principal含“pal”音，principle含“ple”音。
+        stationary｜静止的；固定的 stationery｜文具；信纸 辨析：后缀“ary”（stationary，含“a”可联想“stand”） vs “ery”（stationery，含“e”可联想“envelope”），倒数第三字母不同。
+        compliment｜赞美；恭维 complement｜补充；互补 辨析：中间元音“i”（compliment） vs “e”（complement），其余拼写完全相同。
+        access｜通道；接近 assess｜评估；评定 excess｜过量；过度；额外的 辨析：access为“ac+cess”，assess为“as+sess”，excess为“ex+cess”；核心区分首字母组合（ac/as/ex）及中间“cc”“ss”“xc”。
+        accept｜接受；承认 except｜除…之外；不包括 expect｜期望；预料 辨析：accept以“ac”开头，except以“ex”开头且中间“cept”，expect以“ex”开头且后接“pect”；注意“c”与“p”在中后部的位置。
+        adapt｜适应；改编 adopt｜采纳；收养 辨析：第二个字母“a” vs “o”，其余均为“d_pt”结构，拼写仅元音不同。
+        rise｜上升；升起（不及物） arise｜出现；产生（不及物） raise｜提起；提高；抚养（及物） 辨析：rise与arise差前缀“a”；raise含“ai”且为及物动词，注意元音排列（r-i-s-e / a-r-i-s-e / r-a-i-s-e）。
+        require｜要求；需要 inquire｜询问；查问 acquire｜获得；习得 辨析：前缀“re”/“in”/“ac”，均接相同词干“quire”，区分前两个字母或前缀组合。
+        proceed｜继续前进；进行 precede｜在…之前；先于 succeed｜成功；继任；接替 辨析：proceed和succeed为“pro+ceed”“suc+ceed”（含双“e”），precede为“pre+cede”（仅一个“e”），注意“ceed”与“cede”的拼写差别。
+        ensure｜确保；保证 insure｜给…保险；投保 assure｜向…保证；使确信 辨析：共享词根“sure”，区别仅在前缀“en”/“in”/“as”，拼写前两个字母不同。
+        sensible｜明智的；理智的；可察觉的 sensitive｜敏感的；灵敏的 辨析：后缀“ible” vs “itive”，sensible含“ib”，sensitive含“it”且多一个“i”音节。
+        considerate｜体贴的；考虑周到的 considerable｜相当大的；重要的 辨析：后缀“ate” vs “able”，considerate以“ate”结尾，considerable以“able”结尾，倒数第二、三字母不同。
+        respectable｜值得尊敬的；体面的 respectful｜恭敬的；表示尊敬的 respective｜各自的；分别的 辨析：后缀“able”/“ful”/“ive”，respectable（可被尊敬）、respectful（充满敬意）、respective（各自的），注意后缀字母组合。
+        historic｜历史上著名的；有历史意义的 historical｜历史的；与历史有关的 辨析：historic无“al”，historical有“al”，词尾是否多两个字母“al”。
+        economic｜经济的；经济学的 economical｜节约的；经济的（实惠的） 辨析：词尾“ic” vs “ical”，多“al”为“节约的”，少“al”为“经济学的”。
+        industrial｜工业的；产业的 industrious｜勤奋的；勤劳的 辨析：后缀“ial” vs “ious”，industrial末尾“ial”，industrious末尾“ious”，最后三个字母不同。
+        decent｜得体的；体面的；像样的 descent｜下降；斜坡；血统 dissent｜异议；不同意（名词/动词） 辨析：decent（d-e-c-e-n-t）无“s”；descent（d-e-s-c-e-n-t）在“c”前多一个“s”；dissent（d-i-s-s-e-n-t）开头为“dis”且双写“s”，注意首元音和“s”的数量。
+        extensive｜广泛的；大量的 intensive｜密集的；深入的 辨析：前缀“ex” vs “in”，词干同为“tensive”，区别仅在开头两个字母。
+        contemporary｜当代的；同时代的 temporary｜临时的；短暂的 辨析：contemporary含前缀“con”且整体为“contemporary”，temporary无“con”且以“tem”开头；共享词干“temporary”部分，注意前半段差异。
+        altitude｜海拔；高度 attitude｜态度；看法 辨析：第二个字母不同 —— altitude 为“l”，attitude 为“t”；除第二个字母外，其余字母及顺序完全相同（均为“a_titude”）。
+        award｜奖品；授予 reward｜报酬；报答 辨析：前缀“a”与“re”，词干均为“ward”；拼写仅前缀两个字母不同。
+        aboard｜在船/飞机/车上；上船/车 abroad｜在国外；到国外 辨析：aboard = a-b-o-a-r-d，abroad = a-b-r-o-a-d；注意“oa”与“ro”的位置互换。
+        assemble｜集合；组装 resemble｜类似；像 辨析：前缀“as”与“re”，词干均为“semble”；区别在前两个字母“as”与“re”。
+        attain｜达到；获得 obtain｜获得；得到 retain｜保留；保持 辨析：前缀“at”“ob”“re”不同，词干均为“tain”；注意开头的“a”“o”“r”。
+        boost｜推动；提高；增长 boast｜自夸；吹嘘 辨析：元音组合不同 —— boost 为“oo”，boast 为“oa”；其余拼写均为“b_st”。
+        clarify｜澄清；阐明 classify｜分类；归类 辨析：clarify 含“ri”（c-l-a-r-i-f-y），classify 含“ss”（c-l-a-s-s-i-f-y）；注意中间是否有“r”及“s”的数量。
+        command｜命令；指挥 commend｜推荐；称赞 comment｜评论；注释 辨析：三者前缀“com”相同，末尾不同 —— command 为“mand”，commend 为“mend”，comment 为“ment”。
+        confirm｜确认；证实 conform｜遵守；符合；一致 辨析：confirm 含“firm”，conform 含“form”；中间为“fi” vs “fo”，末尾“rm”相同。
+        conscience｜良心；良知 conscious｜有意识的；自觉的 辨析：conscience 以“science”为核心（sci+ence），conscious 以“scious”结尾（scio+us）；注意末尾“ence”与“ous”及“i”的位置。
+        conserve｜保存；保护 preserve｜保存；保藏；维持 reserve｜预订；保留；储备 辨析：前缀“con”“pre”“re”不同，词干均为“serve”；注意开头三个字母。
+        contact｜接触；联系 contract｜合同；收缩 contrast｜对比；对照 辨析：均以“con”开头，contact 无“r”且结尾“tact”；contract 含“r”且结尾“tract”；contrast 含“r”且结尾“trast”（无“c”）。注意有无“r”及末尾字母组合。
+        continuous｜连续的；持续的 continual｜频繁的；不断的 辨析：结尾不同 —— continuous 为“uous”，continual 为“ual”；拼写中间差异在“uou” vs “ua”。
+        contribute｜贡献；捐献 distribute｜分配；分发 辨析：前缀“con”与“dis”，词干均为“tribute”；区别在开头两个字母“co”与“di”。
+        council｜委员会；理事会 counsel｜劝告；建议；律师 辨析：council 含“ci”（c-o-u-n-c-i-l），counsel 含“se”（c-o-u-n-s-e-l）；注意中间“i”与“e”及“l”与“s”的位置。
+        deceive｜欺骗 perceive｜感知；察觉 receive｜收到；接待 辨析：前缀“de”“per”“re”不同，词干均为“ceive”；注意开头两个字母。
+        desert｜沙漠；放弃（动词） dessert｜甜点 辨析：desert 只有一个“s”（d-e-s-e-r-t），dessert 有两个“s”（d-e-s-s-e-r-t）；注意中间是否双写“s”。
+        device｜设备；装置（名词） devise｜设计；发明（动词） 辨析：结尾“ce”与“se” —— device 以“c”结尾，devise 以“s”结尾；其余拼写完全相同。
+        draft｜草稿；草案；征兵 drift｜漂流；趋势 辨析：元音“a”与“i”不同，其余均为“dr_ft”；注意第二个字母后是“a”还是“i”。
+        drag｜拖；拉 drug｜药；毒品 辨析：元音“a”与“u”不同，其余均为“dr_g”；注意中间元音差异。
+        explicit｜明确的；清晰的 implicit｜含蓄的；隐含的 辨析：前缀“ex”与“im”不同，词干均为“plicit”；注意开头首字母“e”与“i”。
+        interior｜内部的；内地的 exterior｜外部的；外面的 辨析：前缀“inter”与“exter”不同，均以“ior”结尾；注意开头“inte”与“exte”的差异。
+        superior｜优越的；上级的 inferior｜低等的；下级的 辨析：前缀“super”与“infer”不同，均以“ior”结尾；区别在开头“sup”与“inf”。
+        maintain｜维持；保养 contain｜包含；容纳 sustain｜维持；支撑 辨析：均以“tain”结尾，前缀分别为“main”“con”“sus”；注意开头三个字母组合。
+        prevent｜防止；预防 invent｜发明；创造 event｜事件；结果 辨析：均含“vent”核心，前缀分别为“pre”“in”“e”；注意前缀字母的有无及组合。
+        propose｜提议；建议 impose｜强加；征（税） compose｜组成；创作 expose｜暴露；揭露 辨析：均以“pose”结尾，前缀分别为“pro”“im”“com”“ex”；注意前两个字母。
+        attract｜吸引 distract｜分散（注意力） subtract｜减去；扣除 辨析：均含“tract”，前缀“at”“dis”“sub”；注意前缀字母组合。
+        dedicate｜致力于；奉献 delicate｜精致的；脆弱的 辨析：拼写差异在第三个字母——dedicate为“d”，delicate为“l”；其余完全相同。
+        definite｜明确的；确定的 infinite｜无限的；无穷的 辨析：前缀“de”与“in”不同，词干均为“finite”；注意开头两个字母。
+        status｜地位；身份 statue｜雕塑；雕像 辨析：status结尾为“s”，statue结尾为“e”；其余拼写完全相同。
+        perspective｜视角；透视 prospective｜预期的；未来的 辨析：前缀“per”与“pro”不同，且中间元音“e”与“o”差异；词干均含“spect”。
+        content｜内容；满足的（adj.） contest｜比赛；竞争 context｜上下文；背景 辨析：均以“con”开头，后缀分别为“tent”“test”“text” —— 注意第三、四个字母（n/s/x）及末尾字母不同。
+        assist｜帮助；协助 resist｜抵抗；抵制 persist｜坚持；持续 consist｜由…组成；在于 辨析：均以“sist”结尾，前缀分别为“as”“re”“per”“con”；注意前两个字母。
+        infer｜推断；推论 refer｜参考；提及 confer｜授予；商议 prefer｜更喜欢 辨析：均以“fer”结尾，前缀分别为“in”“re”“con”“pre”；注意开头两个字母。
+        offer｜提供；给予 suffer｜遭受；忍受 辨析：均含“ffer”结构，offer为“o-ff-er”，suffer为“s-u-ff-er”；区别在开头“o”与“su”。
+        repel｜击退；排斥 compel｜强迫；迫使 propel｜推进；驱动 expel｜驱逐；开除 辨析：均以“pel”结尾，前缀分别为“re”“com”“pro”“ex”；注意前缀字母。
+        submit｜提交；服从 admit｜承认；允许进入 permit｜允许；许可 commit｜犯（罪）；承诺 辨析：均以“mit”结尾，前缀分别为“sub”“ad”“per”“com”；注意前缀字母组合。
+        oppose｜反对；反抗 suppose｜假设；认为 辨析：oppose为“o-p-p-o-s-e”，suppose为“s-u-p-p-o-s-e”；区别在开头是否有“su”及首字母“o”与“s”。
+        assume｜假定；承担 resume｜恢复；继续 consume｜消费；消耗 辨析：均以“sume”结尾，前缀分别为“as”“re”“con”；注意开头两个字母。
+        convert｜转换；转变 invert｜倒置；颠倒 revert｜恢复；回返 辨析：均以“vert”结尾，前缀分别为“con”“in”“re”；注意开头两个或三个字母。
+        emigrate｜移居国外（移出） immigrate｜移居入境（移入） migrate｜迁移；迁徙 辨析：emigrate 以“e”开头（移出），immigrate 以“im”开头（移入），migrate 无前缀；注意前缀字母及双写“m”与否。
+        ingenious｜精巧的；机灵的 ingenuous｜天真的；率直的 辨析：两者拼写前五位均为“ingen”，差异在第六个字母——ingenious 为“i”（i-n-g-e-n-i-o-u-s），ingenuous 为“u”（i-n-g-e-n-u-o-u-s）；注意中间是“i”还是“u”，且后缀“ious”与“uous”不同。
+        persecute｜迫害；困扰 prosecute｜起诉；控告 辨析：前缀“per”与“pro”不同，词干均为“secute”；注意第二、三个字母“er”与“ro”。
+        simulate｜模拟；假装 stimulate｜刺激；激励 辨析：simulate 为“s-i-m-u-l-a-t-e”，stimulate 为“s-t-i-m-u-l-a-t-e”；区别在开头“s”后是否有字母“t”。
+        extinct｜灭绝的；熄灭的 instinct｜本能；直觉 辨析：extinct 为“e-x-t-i-n-c-t”，instinct 为“i-n-s-t-i-n-c-t”；前缀不同，且 extinct 无“s”，instinct 含“s”。
+        accident｜事故；意外 incident｜事件；事变 辨析：accident 以“ac”开头，incident 以“in”开头；词干均含“cident”，注意前缀“ac”与“in”。
+        afflict｜使痛苦；折磨 inflict｜施加（打击）；使遭受 辨析：afflict 为“a-f-f-l-i-c-t”（双写“f”），inflict 为“i-n-f-l-i-c-t”（单“f”）；前缀“af”与“in”不同。
+        elicit｜引出；诱出 illicit｜非法的；违禁的 辨析：elicit 为“e-l-i-c-i-t”（单“l”），illicit 为“i-l-l-i-c-i-t”（双写“l”）；开头“e”与“il”不同，且 illicit 双写“l”。
+        eligible｜合格的；有资格的 illegible｜难以辨认的；字迹模糊的 辨析：eligible 为“e-l-i-g-i-b-l-e”（开头“e”），illegible 为“i-l-l-e-g-i-b-l-e”（前缀“il”且双写“l”）；注意开头字母及“l”的数量。
+        feasible｜可行的；可能的 flexible｜灵活的；柔韧的 辨析：feasible 为“f-e-a-s-i-b-l-e”（含“as”），flexible 为“f-l-e-x-i-b-l-e”（含“le”）；第二个字母后分别为“a”与“l”，且中间“as”与“lex”不同。
+        complain｜抱怨；投诉（动词） complaint｜抱怨；投诉（名词） 辨析：complain 为“c-o-m-p-l-a-i-n”（以“in”结尾），complaint 为“c-o-m-p-l-a-i-n-t”（多一个“t”）；名词末尾有“t”。
+        precise｜精确的；准确的 concise｜简洁的；简明的 辨析：前缀“pre”与“con”不同，词干均为“cise”；注意开头“pre”与“con”。
+        differ｜不同；有区别 defer｜推迟；延期 辨析：differ 为“d-i-f-f-e-r”（第二字母“i”，双写“f”），defer 为“d-e-f-e-r”（第二字母“e”，单“f”）；注意元音及“f”的数量。
+        diffuse｜散布；扩散（动词/形容词） confuse｜使困惑；混淆 辨析：前缀“dif”与“con”不同，词干均为“fuse”；注意开头“dif”与“con”。
+        profession｜职业；专业 procession｜队伍；行列 辨析：profession 为“p-r-o-f-e-s-s-i-o-n”（含“f”），procession 为“p-r-o-c-e-s-s-i-o-n”（含“c”）；注意第五个字母“f”与“c”。
+        include｜包括；包含 exclude｜排除；排斥 conclude｜得出结论；结束 辨析：均以“clude”结尾，前缀“in”“ex”“con”不同；注意前缀字母组合。
+        concede｜承认；让步 recede｜后退；消退 exceed｜超过；超出 辨析：concede 和 recede 以“cede”结尾（c-e-d-e），exceed 以“ceed”结尾（c-e-e-d）；注意末尾是“cede”还是“ceed”，即“e”与“d”之间的字母数量不同。
+        prescribe｜开（药方）；规定 proscribe｜禁止；排斥 辨析：前缀“pre”与“pro”不同，词干均为“scribe”；注意开头“pre”与“pro”及中间元音“e”与“o”。
+        oppress｜压迫；压制 suppress｜镇压；抑制 repress｜克制；镇压 辨析：均以“press”结尾，前缀“op”“sup”“re”不同；注意前缀字母组合。
+        describe｜描述；描绘 ascribe｜归因于；归咎于 subscribe｜订阅；同意 辨析：均以“scribe”结尾，前缀“de”“a”“sub”不同；注意前缀字母。
+        `;
+
+        // ============================================================
+        // 数据解析器（修复版 - 修复近义词解析）
+        // ============================================================
+        function parseData(raw) {
+            const data = {
+                root: [],
+                uncommon: [],
+                synonym: [],
+                shape: []
+            };
+
+            const blocks = raw.split('【');
+            for (const block of blocks) {
+                if (block.startsWith('词根词缀】')) {
+                    const lines = block.split('\n');
+                    for (const line of lines) {
+                        const trimmed = line.trim();
+                        if (!trimmed || trimmed.startsWith('【')) continue;
+                        const parts = trimmed.split('｜');
+                        if (parts.length >= 5) {
+                            const word = parts[0].trim();
+                            const meaning = parts[2].trim();
+                            const extend = parts[3].trim();
+                            const examples = parts[4].trim();
+                            data.root.push({
+                                group: [word],
+                                meanings: [meaning],
+                                analysis: `引申：${extend}；例词：${examples}`,
+                                source: '词根词缀'
+                            });
+                        }
+                    }
+                } else if (block.startsWith('熟词僻义】')) {
+                    const lines = block.split('\n');
+                    for (const line of lines) {
+                        const trimmed = line.trim();
+                        if (!trimmed || trimmed.startsWith('【')) continue;
+                        const clean = trimmed.replace(/^\d+\.\s*/, '');
+                        const parts = clean.split('｜');
+                        if (parts.length >= 4) {
+                            const word = parts[0].trim();
+                            const common = parts[1].trim();
+                            const uncommon = parts[2].trim();
+                            const exam = parts[3].trim();
+                            data.uncommon.push({
+                                group: [word],
+                                meanings: [common, uncommon],
+                                analysis: `考点：${exam}`,
+                                source: '熟词僻义'
+                            });
+                        }
+                    }
+                } else if (block.startsWith('近义词】') || block.startsWith('近义词组】')) {
+                    // 统一处理近义词
+                    const content = block.replace(/^近义词组?】/, '').trim();
+                    // 按 "辨析：" 分割
+                    const segments = content.split(/(?=【近义词组】)/);
+                    for (const seg of segments) {
+                        if (!seg.trim()) continue;
+                        const lines = seg.split('\n').filter(l => l.trim().length > 0);
+                        const entries = [];
+                        let analysis = '';
+                        for (const line of lines) {
+                            const trimmed = line.trim();
+                            if (trimmed.includes('辨析：')) {
+                                const idx = trimmed.indexOf('辨析：');
+                                if (idx > 0) {
+                                    const before = trimmed.substring(0, idx).trim();
+                                    if (before) {
+                                        const parts = before.split('｜');
+                                        if (parts.length >= 2) {
+                                            entries.push({ word: parts[0].trim(), meaning: parts.slice(1).join('｜').trim() });
+                                        }
+                                    }
+                                }
+                                analysis = trimmed.substring(idx).trim();
+                            } else if (trimmed) {
+                                const parts = trimmed.split('｜');
+                                if (parts.length >= 2) {
+                                    entries.push({ word: parts[0].trim(), meaning: parts.slice(1).join('｜').trim() });
+                                }
+                            }
+                        }
+                        if (entries.length > 0) {
+                            const group = entries.map(e => e.word);
+                            const meanings = entries.map(e => e.meaning);
+                            data.synonym.push({
+                                group: group,
+                                meanings: meanings,
+                                analysis: analysis || '辨析：' + entries.map(e => e.word + '（' + e.meaning + '）').join('；'),
+                                source: '近义词'
+                            });
+                        }
+                    }
+                } else if (block.startsWith('形近词】')) {
+                    const lines = block.split('\n');
+                    for (const line of lines) {
+                        const trimmed = line.trim();
+                        if (!trimmed || trimmed.startsWith('【')) continue;
+                        const idx = trimmed.indexOf('辨析：');
+                        if (idx === -1) continue;
+                        const left = trimmed.substring(0, idx).trim();
+                        const right = trimmed.substring(idx).trim();
+                        const fragments = left.split(/\s+/);
+                        const group = [];
+                        const meanings = [];
+                        for (const frag of fragments) {
+                            const pair = frag.split('｜');
+                            if (pair.length >= 2) {
+                                group.push(pair[0].trim());
+                                meanings.push(pair.slice(1).join('｜').trim());
+                            }
+                        }
+                        if (group.length > 0) {
+                            data.shape.push({
+                                group: group,
+                                meanings: meanings,
+                                analysis: right,
+                                source: '形近词'
+                            });
+                        }
+                    }
+                }
+            }
+            return data;
+        }
+
+        // ============================================================
+        // 去重工具函数
+        // ============================================================
+        function deduplicateArray(arr) {
+            const seen = new Set();
+            const result = [];
+            for (const item of arr) {
+                // 用 group 的排序后字符串作为唯一键
+                const key = [...item.group].sort().join('|||');
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    result.push(item);
+                }
+            }
+            return result;
+        }
+
+        // ============================================================
+        // 构建 ALL_CARD_GROUPS
+        // ============================================================
+        const parsed = parseData(RAW_DATA);
+
+        // 对形近词进行去重（防止原始数据中的重复）
+        parsed.shape = deduplicateArray(parsed.shape);
+
+        // 移除被裁剪的指定条目（共3组），这些组在原始数据中已存在
+        const toRemove = [
+            ['drag', 'drug'],
+            ['boost', 'boast'],
+            ['award', 'reward']
+        ];
+        parsed.shape = parsed.shape.filter(item => {
+            const g = item.group;
+            for (const pair of toRemove) {
+                if (g.length === 2 && g[0] === pair[0] && g[1] === pair[1]) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        // 重新追加被移除的3组（保留它们）
+        parsed.shape.push(
+            {
+                group: ["drag", "drug"],
+                meanings: ["拖；拉", "药；毒品"],
+                analysis: "辨析：元音 'a' 与 'u' 不同，其余均为 'dr_g'；注意中间元音差异",
+                source: "形近词"
+            },
+            {
+                group: ["boost", "boast"],
+                meanings: ["推动；提高；增长", "自夸；吹嘘"],
+                analysis: "辨析：元音组合不同 —— boost 为 'oo'，boast 为 'oa'；其余拼写均为 'b_st'",
+                source: "形近词"
+            },
+            {
+                group: ["award", "reward"],
+                meanings: ["奖品；授予", "报酬；报答"],
+                analysis: "辨析：前缀 'a' 与 're'，词干均为 'ward'；拼写仅前缀两个字母不同",
+                source: "形近词"
+            }
+        );
+
+        // 追加 1 条新条目（imminent/eminent），原始数据中没有
+        parsed.shape.push(
+            {
+                group: ["imminent", "eminent"],
+                meanings: ["即将来临的", "杰出的"],
+                analysis: "辨析：拼写接近，阅读选项高频挖坑",
+                source: "形近词"
+            }
+        );
+
+        // 注意：compliment/complement 和 exceed/proceed 已在原始数据中存在，不再追加
+        // exceed/proceed 已在原始数据的 concede/recede/exceed 三词组中包含
+
+        // 最后再次对形近词去重（确保追加后没有重复）
+        parsed.shape = deduplicateArray(parsed.shape);
+
+        // 对近义词也做去重（防止解析过程中产生重复）
+        parsed.synonym = deduplicateArray(parsed.synonym);
+
+        // 最终构建
+        const ALL_CARD_GROUPS = {
+            shape: {
+                label: '形近词',
+                data: parsed.shape
+            },
+            synonym: {
+                label: '近义词',
+                data: parsed.synonym
+            },
+            root: {
+                label: '词根词缀',
+                data: parsed.root
+            },
+            uncommon: {
+                label: '熟词僻义',
+                data: parsed.uncommon
+            }
+        };
+
+        // ============================================================
+        // 存储工具（保持不变）
+        // ============================================================
+        function getNSKey(key) {
+            const ns = APP_CONFIG.storageNamespace || 'default';
+            return 'ns_' + ns + '_' + key;
+        }
+
+        function getStore(key, def) {
+            try { const v = localStorage.getItem(getNSKey(key)); return v !== null ? JSON.parse(v) : def; } catch { return def; }
+        }
+
+        function setStore(key, val) { localStorage.setItem(getNSKey(key), JSON.stringify(val)); }
+
+        function getToday() {
+            const d = new Date();
+            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2,
+            '0');
+        }
+
+        // ============================================================
+        // 【新增】跨天自动重置今日额度
+        // ============================================================
+        function checkAndResetDailyQuota() {
+            const today = getToday();
+            const lastUseDate = getStore('app_last_use_date', '');
+            
+            // 如果上次使用日期为空，说明是首次使用，直接记录今天日期
+            if (!lastUseDate) {
+                setStore('app_last_use_date', today);
+                // 首次使用，重置今日数据
+                setStore('app_today_new_count', 0);
+                setStore('app_today_wrong_indices', []);
+                setStore('app_today_wrong_review_count', 0);
+                setStore('app_today_date', today);
+                console.log('[跨天检查] 首次使用，初始化今日数据');
+                return;
+            }
+
+            // 如果当前日期不等于上次使用日期，说明跨天了
+            if (today !== lastUseDate) {
+                console.log('[跨天检查] 检测到跨天：', lastUseDate, '→', today);
+                // 重置今日数据
+                setStore('app_today_new_count', 0);
+                setStore('app_today_wrong_indices', []);
+                setStore('app_today_wrong_review_count', 0);
+                setStore('app_today_date', today);
+                // 更新上次使用日期
+                setStore('app_last_use_date', today);
+                console.log('[跨天检查] 今日额度已重置');
+            } else {
+                console.log('[跨天检查] 同一天使用，保留进度');
+            }
+        }
+
+        // ============================================================
+        // 倒计时 & 地狱模式图标 (保持不变)
+        // ============================================================
+        function updateDayLabel() {
+            const target = new Date(2026, 11, 19);
+            const now = new Date();
+            const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+            const days = diff > 0 ? diff : 0;
+            document.getElementById('dayLabel').textContent = 'DAY' + days;
+        }
+
+        function getHaloIcon(days) {
+            if (days > 90) return `<svg viewBox="0 0 100 100" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"><ellipse cx="50" cy="46" rx="34" ry="11"/><path d="M16 46 Q50 58 84 46"/><path d="M50 35 L50 20 M36 38 L24 26 M64 38 L76 26 M28 44 L12 42 M72 44 L88 42"/></svg>`;
+            if (days > 60) return `<svg viewBox="0 0 100 100" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"><ellipse cx="50" cy="46" rx="34" ry="11"/><path d="M16 46 Q50 58 84 46"/><path d="M50 35 L44 48 L54 54"/><path d="M42 38 L36 48"/><path d="M50 35 L50 20 M64 38 L76 26 M28 44 L12 42 M72 44 L88 42"/></svg>`;
+            if (days > 30) return `<svg viewBox="0 0 100 100" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M16 46 A34 11 0 0 1 50 35"/><path d="M50 57 A34 11 0 0 1 84 46"/><path d="M16 46 Q50 58 84 46"/><path d="M50 35 L44 48 L54 54 L46 68"/><path d="M38 40 L32 52"/><path d="M62 40 L56 52"/><path d="M44 58 L38 68"/><path d="M36 38 L24 26 M64 38 L76 26 M28 44 L12 42 M72 44 L88 42"/></svg>`;
+            return `<svg viewBox="0 0 100 100" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M50 18 L50 82"/><path d="M30 44 L70 44"/><path d="M30 28 L18 14 L26 20"/><path d="M70 28 L82 14 L74 20"/></svg>`;
+        }
+
+        function updateDeathIcon() {
+            const dayLabel = document.getElementById('dayLabel');
+            const days = parseInt(dayLabel.textContent.replace('DAY', '')) || 105;
+            document.getElementById('deathBtn').innerHTML = getHaloIcon(days);
+        }
+
+        function getDeathModeDescription() {
+            const dayLabel = document.getElementById('dayLabel');
+            const days = parseInt(dayLabel.textContent.replace('DAY', '')) || 105;
+            if (days > 90) return '完整光环';
+            if (days > 60) return '轻度裂痕';
+            if (days > 30) return '中度裂痕';
+            return '十字架';
+        }
+
+        function getDeathIconSmall() {
+            const dayLabel = document.getElementById('dayLabel');
+            const days = parseInt(dayLabel.textContent.replace('DAY', '')) || 105;
+            return getHaloIcon(days).replace(/stroke-width="3.5"/g, 'stroke-width="2"')
+                .replace(/width="22" height="22"/g, 'width="18" height="18"');
+        }
+
+        // ============================================================
+        // 全局状态（保持不变）
+        // ============================================================
+        const TAB_NAMES = Object.keys(ALL_CARD_GROUPS);
+        const TAB_LABELS = {};
+        TAB_NAMES.forEach(k => { TAB_LABELS[k] = ALL_CARD_GROUPS[k].label; });
+
+        function getTotalCards() {
+            let total = 0;
+            TAB_NAMES.forEach(tab => { total += ALL_CARD_GROUPS[tab].data.length; });
+            return total;
+        }
+        const TOTAL_CARDS = getTotalCards();
+
+        let currentTab = TAB_NAMES.length > 0 ? TAB_NAMES[0] : 'shape';
+        let currentIndex = 0;
+        let isFlipped = false;
+        let currentFilter = 'all';
+        let searchTerm = '';
+        let filteredIndices = [];
+
+        let learnedSets = {};
+        let favSets = {};
+        let wrongSets = {};
+        let masteryMaps = {};
+
+        let phase = 'phase1';
+        let controlMode = 'strict';
+
+        let clickCooldown = false;
+        const CLICK_COOLDOWN_MS = 350;
+        let dblClickTimer = null;
+        const DBL_CLICK_DELAY = 60;
+
+        let startTime = Date.now();
+        let totalSeconds = 0;
+        let timerInterval = null;
+
+        // DOM
+        const cardEl = document.getElementById('card');
+        const wordListEl = document.getElementById('wordList');
+        const backContentEl = document.getElementById('backContent');
+        const dashPhase = document.getElementById('dashPhase');
+        const dashProgress = document.getElementById('dashProgress');
+        const dashNewStatus = document.getElementById('dashNewStatus');
+        const dashWrong = document.getElementById('dashWrong');
+        const dashTrend = document.getElementById('dashTrend');
+        const progressFill = document.getElementById('progressFill');
+        const progressLabel = document.getElementById('progressLabel');
+        const lockOverlay = document.getElementById('lockOverlay');
+        const emptyState = document.getElementById('emptyState');
+        const emptyMsg = document.getElementById('emptyMsg');
+        const emptySub = document.getElementById('emptySub');
+        const modeToggle = document.getElementById('modeToggle');
+        const modeLabel = document.getElementById('modeLabel');
+        const modeDot = document.getElementById('modeDot');
+        const modeLabelStatus = document.getElementById('modeLabelStatus');
+        const currentTabLabel = document.getElementById('currentTabLabel');
+        const statTotal = document.getElementById('statTotal');
+        const statFav = document.getElementById('statFav');
+        const statWrong = document.getElementById('statWrong');
+        const favBtn = document.getElementById('favBtn');
+        const wrongBtn = document.getElementById('wrongBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const deathBtn = document.getElementById('deathBtn');
+        const searchInput = document.getElementById('searchInput');
+        const searchClear = document.getElementById('searchClear');
+        const reportBtn = document.getElementById('reportBtn');
+        const reportModal = document.getElementById('reportModal');
+        const reportText = document.getElementById('reportText');
+        const reportModalTitle = document.getElementById('reportModalTitle');
+        const copyReportBtn = document.getElementById('copyReportBtn');
+        const closeReportBtn = document.getElementById('closeReportBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const exportModal = document.getElementById('exportModal');
+        const exportText = document.getElementById('exportText');
+        const exportModalTitle = document.getElementById('exportModalTitle');
+        const copyExportBtn = document.getElementById('copyExportBtn');
+        const closeExportBtn = document.getElementById('closeExportBtn');
+        const shortcutToast = document.getElementById('shortcutToast');
+        const styleToggle = document.getElementById('styleToggle');
+        const resetRecordsBtn = document.getElementById('resetRecordsBtn');
+        const appTitle = document.getElementById('appTitle');
+        const tipText = document.getElementById('tipText');
+
+        // 备份按钮
+        const exportBackupBtn = document.getElementById('exportBackupBtn');
+        const importBackupBtn = document.getElementById('importBackupBtn');
+        const fileInput = document.getElementById('fileInput');
+
+        // ============================================================
+        // 存储函数（保持不变）
+        // ============================================================
+        function loadSets(tab) {
+            if (!learnedSets[tab]) {
+                const raw = getStore('learned_' + tab, []);
+                learnedSets[tab] = new Set(raw);
+            }
+            if (!favSets[tab]) {
+                const raw = getStore('fav_' + tab, []);
+                favSets[tab] = new Set(raw);
+            }
+            if (!wrongSets[tab]) {
+                const raw = getStore('wrong_' + tab, []);
+                wrongSets[tab] = new Set(raw);
+            }
+            if (!masteryMaps[tab]) {
+                masteryMaps[tab] = getStore('mastery_' + tab, {});
+            }
+        }
+
+        function saveSets(tab) {
+            if (learnedSets[tab]) setStore('learned_' + tab, [...learnedSets[tab]]);
+            if (favSets[tab]) setStore('fav_' + tab, [...favSets[tab]]);
+            if (wrongSets[tab]) setStore('wrong_' + tab, [...wrongSets[tab]]);
+            if (masteryMaps[tab]) setStore('mastery_' + tab, masteryMaps[tab]);
+        }
+
+        function getPhase() { return getStore('app_phase', 'phase1'); }
+
+        function setPhase(val) { setStore('app_phase', val); }
+
+        function getControlMode() { return getStore('app_control_mode', 'strict'); }
+
+        function setControlMode(val) { setStore('app_control_mode', val); }
+
+        function getTodayDate() { return getStore('app_today_date', ''); }
+
+        function setTodayDate(val) { setStore('app_today_date', val); }
+
+        function getTodayNewCount() { return getStore('app_today_new_count', 0); }
+
+        function setTodayNewCount(val) { setStore('app_today_new_count', val); }
+
+        function getTodayWrongIndices() { return getStore('app_today_wrong_indices', []); }
+
+        function setTodayWrongIndices(val) { setStore('app_today_wrong_indices', val); }
+
+        function getTodayWrongReviewCount() { return getStore('app_today_wrong_review_count', 0); }
+
+        function setTodayWrongReviewCount(val) { setStore('app_today_wrong_review_count', val); }
+
+        function getDailyHistory() { return getStore('app_daily_history', {}); }
+
+        function setDailyHistory(val) { setStore('app_daily_history', val); }
+
+        function getTotalLearned() {
+            let total = 0;
+            TAB_NAMES.forEach(tab => { if (learnedSets[tab]) total += learnedSets[tab].size; });
+            return total;
+        }
+
+        function getTodayQuota() {
+            if (getPhase() !== 'phase1') return Infinity;
+            const start = getStore('app_phase1_start', getToday());
+            const startDate = new Date(start);
+            const now = new Date();
+            const day = Math.floor((now - startDate) / 86400000) + 1;
+            if (day <= 1) return 110;
+            if (day === 2) return 110;
+            return 100;
+        }
+
+        function isQuotaReached() {
+            if (getPhase() !== 'phase1') return false;
+            return getTodayNewCount() >= getTodayQuota();
+        }
+
+        function getCurrentData() { return ALL_CARD_GROUPS[currentTab].data; }
+
+        function getCurrentCard() {
+            const data = getCurrentData();
+            if (currentIndex < 0 || currentIndex >= data.length) {
+                if (filteredIndices.length > 0) currentIndex = filteredIndices[0];
+                else currentIndex = 0;
+            }
+            return data[currentIndex] || data[0];
+        }
+
+        function getMastery(tab, cardIdx, wordIdx) {
+            if (!masteryMaps[tab]) return 0;
+            return parseInt(masteryMaps[tab][cardIdx + '_' + wordIdx]) || 0;
+        }
+
+        function setMastery(tab, cardIdx, wordIdx, val) {
+            if (!masteryMaps[tab]) masteryMaps[tab] = {};
+            const key = cardIdx + '_' + wordIdx;
+            if (val <= 0) delete masteryMaps[tab][key];
+            else masteryMaps[tab][key] = Math.min(5, val);
+            setStore('mastery_' + tab, masteryMaps[tab]);
+        }
+
+        function getFilteredIndices() {
+            const data = getCurrentData();
+            let indices = data.map((_, i) => i);
+            const search = searchTerm.trim().toLowerCase();
+            if (search) {
+                indices = indices.filter(i => {
+                    const card = data[i];
+                    const fields = [
+                        ...card.group,
+                        ...card.meanings,
+                        card.analysis || '',
+                        card.source || ''
+                    ];
+                    return fields.some(f => f.toLowerCase().includes(search));
+                });
+            }
+            if (currentFilter === 'fav') {
+                const fav = favSets[currentTab] || new Set();
+                indices = indices.filter(i => fav.has(i));
+            } else if (currentFilter === 'wrong') {
+                const wrong = wrongSets[currentTab] || new Set();
+                indices = indices.filter(i => wrong.has(i));
+            } else if (currentFilter === 'review') {
+                const fav = favSets[currentTab] || new Set();
+                const wrong = wrongSets[currentTab] || new Set();
+                indices = indices.filter(i => fav.has(i) || wrong.has(i));
+            }
+            return indices;
+        }
+
+        // ============================================================
+        // 渲染引擎（完全保持不变）
+        // ============================================================
+        function renderCard() {
+            const data = getCurrentData();
+            const filterLabelMap = { all: '全部', fav: '仅收藏', wrong: '仅错题', review: '复习队列' };
+            const filterLabel = filterLabelMap[currentFilter] || '全部';
+            const tabLabel = TAB_LABELS[currentTab] || currentTab;
+            currentTabLabel.textContent = tabLabel;
+            modeLabelStatus.innerHTML = `当前：<span class="highlight">${filterLabel}</span> · ${tabLabel}`;
+
+            const totalCount = data.length;
+            const favCount = (favSets[currentTab] || new Set()).size;
+            const wrongCount = (wrongSets[currentTab] || new Set()).size;
+            statTotal.textContent = totalCount;
+            statFav.textContent = favCount;
+            statWrong.textContent = wrongCount;
+
+            const isEmpty = filteredIndices.length === 0;
+            if (isEmpty) {
+                emptyState.classList.remove('hidden');
+                let msg = '暂无卡片';
+                let sub = '';
+                if (currentFilter === 'fav') {
+                    msg = '暂无收藏卡片';
+                    sub = '刷题时点击 ★ 按钮加入收藏';
+                } else if (currentFilter === 'wrong') {
+                    msg = '暂无错题卡片';
+                    sub = '刷题时点击 ✕ 按钮标记错题';
+                } else if (currentFilter === 'review') {
+                    msg = '暂无复习卡片';
+                    sub = '收藏或标记错题的卡片会出现在这里';
+                } else if (searchTerm.trim() !== '') {
+                    msg = '未找到匹配的卡片';
+                    sub = '试试其他关键词';
+                } else {
+                    msg = '当前分类暂无卡片数据';
+                    sub = '请切换其他分类';
+                }
+                emptyMsg.textContent = msg;
+                emptySub.textContent = sub;
+                wordListEl.innerHTML = '';
+                document.querySelector('.card-front .hint').style.display = 'none';
+                cardEl.classList.remove('flipped');
+                isFlipped = false;
+                backContentEl.innerHTML = '';
+                updateDashboard();
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+                document.querySelector('.card-front .hint').style.display = 'block';
+            }
+
+            if (currentIndex < 0 || currentIndex >= data.length) {
+                if (filteredIndices.length > 0) currentIndex = filteredIndices[0];
+                else currentIndex = 0;
+            }
+            const card = data[currentIndex];
+            if (!card) return;
+
+            loadSets(currentTab);
+
+            wordListEl.innerHTML = card.group.map(w => `<span>${w}</span>`).join('');
+
+            const totalChars = card.group.join('').length;
+            if (totalChars > 40) {
+                wordListEl.style.fontSize = 'clamp(13px, 3.2vw, 18px)';
+            } else if (totalChars > 24) {
+                wordListEl.style.fontSize = 'clamp(15px, 3.8vw, 21px)';
+            } else {
+                wordListEl.style.fontSize = '';
+            }
+
+            let html = '';
+            card.group.forEach((w, i) => {
+                const m = card.meanings[i] || '';
+                const mastery = getMastery(currentTab, currentIndex, i);
+                let bars = '';
+                for (let b = 1; b <= 5; b++) {
+                    bars +=
+                        `<span class="bar ${b <= mastery ? 'filled' : ''}" style="display:inline-block;width:10px;height:${3 + b*2}px;border-radius:2px;background:${b <= mastery ? '#222' : '#d0d0d0'};margin:0 1px;transition:0.2s;"></span>`;
+                }
+                html += `<div class="item">
+                            <span class="word">${w}</span>
+                            <span class="phonetic">${m}</span>
+                            <span style="margin-left:auto;display:inline-flex;align-items:flex-end;gap:1px;height:18px;">${bars}</span>
+                         </div>`;
+            });
+            if (card.analysis) {
+                html += `<div class="analysis"><strong>辨析：</strong>${card.analysis}</div>`;
+            }
+            if (card.source) {
+                html += `<div class="source-tag">◆ ${card.source}</div>`;
+            }
+            if (currentFilter === 'review') {
+                const isFav = favSets[currentTab] && favSets[currentTab].has(currentIndex);
+                const isWrong = wrongSets[currentTab] && wrongSets[currentTab].has(currentIndex);
+                let tag = '';
+                if (isFav && isWrong) tag = '错题 · 收藏';
+                else if (isWrong) tag = '错题';
+                else if (isFav) tag = '收藏';
+                if (tag) html += `<div class="review-tag">${tag}</div>`;
+            }
+            const isFav = favSets[currentTab] && favSets[currentTab].has(currentIndex);
+            html += `<div class="card-actions">
+                        <button class="action-btn" data-action="forgot">✕</button>
+                        <button class="action-btn" data-action="remember">✔︎</button>
+                        <button class="action-btn ${isFav ? 'fav-active' : ''}" data-action="favorite">☆</button>
+                     </div>`;
+            backContentEl.innerHTML = html;
+
+            document.querySelectorAll('.card-actions .action-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const action = this.dataset.action;
+                    const idx = currentIndex;
+                    const tab = currentTab;
+                    const cardData = getCurrentData()[idx];
+                    if (action === 'forgot') {
+                        if (!wrongSets[tab]) wrongSets[tab] = new Set();
+                        wrongSets[tab].add(idx);
+                        const wrongs = getTodayWrongIndices();
+                        if (!wrongs.includes(idx)) { wrongs.push(idx);
+                            setTodayWrongIndices(wrongs); }
+                        if (cardData) {
+                            cardData.group.forEach((_, wi) => {
+                                const cur = getMastery(tab, idx, wi);
+                                setMastery(tab, idx, wi, Math.max(0, cur - 1));
+                            });
+                        }
+                        saveSets(tab);
+                        renderCard();
+                        if (isFlipped) cardEl.classList.add('flipped');
+                    } else if (action === 'remember') {
+                        if (wrongSets[tab]) wrongSets[tab].delete(idx);
+                        if (cardData) {
+                            cardData.group.forEach((_, wi) => {
+                                const cur = getMastery(tab, idx, wi);
+                                setMastery(tab, idx, wi, Math.min(5, cur + 1));
+                            });
+                        }
+                        saveSets(tab);
+                        renderCard();
+                        if (isFlipped) cardEl.classList.add('flipped');
+                    } else if (action === 'favorite') {
+                        if (!favSets[tab]) favSets[tab] = new Set();
+                        if (favSets[tab].has(idx)) favSets[tab].delete(idx);
+                        else favSets[tab].add(idx);
+                        saveSets(tab);
+                        renderCard();
+                        if (isFlipped) cardEl.classList.add('flipped');
+                    }
+                });
+            });
+
+            if (isFlipped) cardEl.classList.add('flipped');
+            else cardEl.classList.remove('flipped');
+
+            if (getPhase() === 'phase1' && isQuotaReached() && currentFilter === 'all') {
+                lockOverlay.classList.remove('hidden');
+            } else {
+                lockOverlay.classList.add('hidden');
+            }
+
+            updateDashboard();
+            saveSets(currentTab);
+        }
+
+        // ============================================================
+        // 仪表盘更新（不变）
+        // ============================================================
+        function updateDashboard() {
+            const ph = getPhase();
+            const phaseMap = { phase1: '阶段1：首轮新学', phase2: '阶段2：巩固二轮', phase3: '阶段3：间隔复习' };
+            dashPhase.textContent = phaseMap[ph] || '—';
+            const total = getTotalLearned();
+            const totalCards = getTotalCards();
+            dashProgress.textContent = `${total} / ${totalCards}`;
+
+            const pct = totalCards > 0 ? Math.min(100, Math.round((total / totalCards) * 100)) : 0;
+            progressFill.style.width = pct + '%';
+            progressLabel.textContent = pct + '%';
+
+            const quota = getTodayQuota();
+            const todayNew = getTodayNewCount();
+            if (ph === 'phase1') {
+                if (isQuotaReached()) {
+                    dashNewStatus.textContent = `已满 (${todayNew}/${quota})`;
+                    dashNewStatus.className = 'value warning';
+                } else {
+                    dashNewStatus.textContent = `剩余 ${quota - todayNew} 张`;
+                    dashNewStatus.className = 'value';
+                }
+            } else {
+                dashNewStatus.textContent = '无配额';
+                dashNewStatus.className = 'value success';
+            }
+            const wrongs = getTodayWrongIndices();
+            dashWrong.textContent = wrongs.length;
+
+            const history = getDailyHistory();
+            const today = getToday();
+            const days = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const key = d.toISOString().slice(0, 10);
+                days.push(history[key] || 0);
+            }
+            dashTrend.textContent = '近7天：' + days.join(', ');
+        }
+
+        // ============================================================
+        // 导航（不变）
+        // ============================================================
+        function goTo(index) {
+            if (clickCooldown) return;
+            if (filteredIndices.length === 0) return;
+            const pos = filteredIndices.indexOf(index);
+            if (pos === -1) { currentIndex = filteredIndices[0];
+                renderCard(); return; }
+            currentIndex = index;
+            isFlipped = false;
+            renderCard();
+            triggerCooldown();
+        }
+
+        function nextCard() {
+            if (clickCooldown) return;
+            if (filteredIndices.length === 0) return;
+            let pos = filteredIndices.indexOf(currentIndex);
+            if (pos === -1) pos = 0;
+            pos = (pos + 1) % filteredIndices.length;
+            currentIndex = filteredIndices[pos];
+            isFlipped = false;
+            renderCard();
+            triggerCooldown();
+        }
+
+        function prevCard() {
+            if (clickCooldown) return;
+            if (filteredIndices.length === 0) return;
+            let pos = filteredIndices.indexOf(currentIndex);
+            if (pos === -1) pos = 0;
+            pos = (pos - 1 + filteredIndices.length) % filteredIndices.length;
+            currentIndex = filteredIndices[pos];
+            isFlipped = false;
+            renderCard();
+            triggerCooldown();
+        }
+
+        function triggerCooldown() {
+            clickCooldown = true;
+            clearTimeout(window._cooldownTimer);
+            window._cooldownTimer = setTimeout(() => {
+                clickCooldown = false;
+            }, CLICK_COOLDOWN_MS);
+        }
+
+        function toggleFlip() {
+            if (clickCooldown) return;
+            if (getPhase() === 'phase1' && isQuotaReached() && currentFilter === 'all') {
+                if (getControlMode() === 'strict') {
+                    alert('今日新词已满，请明天再来。错题复习不受限制。');
+                    return;
+                } else {
+                    if (!confirm('今日新词配额已满，继续新增会有记忆负担风险，是否确定继续？')) return;
+                }
+            }
+            cardEl.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+            if (isFlipped) {
+                if (!learnedSets[currentTab]) learnedSets[currentTab] = new Set();
+                if (!learnedSets[currentTab].has(currentIndex)) {
+                    learnedSets[currentTab].add(currentIndex);
+                    const today = getToday();
+                    if (getTodayDate() !== today) {
+                        setTodayDate(today);
+                        setTodayNewCount(0);
+                        setTodayWrongIndices([]);
+                        setTodayWrongReviewCount(0);
+                    }
+                    setTodayNewCount(getTodayNewCount() + 1);
+                    const history = getDailyHistory();
+                    history[today] = (history[today] || 0) + 1;
+                    setDailyHistory(history);
+                    saveSets(currentTab);
+                    const totalCards = getTotalCards();
+                    if (getTotalLearned() >= totalCards && getPhase() === 'phase1') {
+                        setPhase('phase2');
+                        alert('🎉 恭喜！首轮全部学完！已自动进入阶段2：巩固二轮。');
+                    }
+                } else {
+                    if (currentFilter === 'wrong' || currentFilter === 'review') {
+                        setTodayWrongReviewCount(getTodayWrongReviewCount() + 1);
+                    }
+                }
+                updateDashboard();
+            }
+            triggerCooldown();
+        }
+
+        // ============================================================
+        // 筛选（不变）
+        // ============================================================
+        function applyFilter(filter) {
+            currentFilter = filter;
+            filteredIndices = getFilteredIndices();
+            if (filteredIndices.length === 0) { currentIndex = -1; } else { currentIndex = filteredIndices[0]; }
+            isFlipped = false;
+            renderCard();
+            updateFilterButtons();
+            if (filteredIndices.length > 0 && currentIndex === -1) {
+                currentIndex = filteredIndices[0];
+                renderCard();
+            }
+        }
+
+        function updateFilterButtons() {
+            [favBtn, wrongBtn, resetBtn].forEach(b => b.classList.remove('active-filter'));
+            if (currentFilter === 'fav') favBtn.classList.add('active-filter');
+            if (currentFilter === 'wrong') wrongBtn.classList.add('active-filter');
+            if (currentFilter === 'review') resetBtn.classList.add('active-filter');
+        }
+
+        function resetFilter() { applyFilter('all'); }
+
+        // ============================================================
+        // 计时器（不变）
+        // ============================================================
+        function startTimer() {
+            startTime = Date.now();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(function() {
+                totalSeconds = Math.floor((Date.now() - startTime) / 1000);
+            }, 1000);
+        }
+
+        function getDurationMinutes() { return Math.round(totalSeconds / 60); }
+
+        // ============================================================
+        // 日报（不变）
+        // ============================================================
+        function generateReportLines() {
+            const newCount = getTodayNewCount();
+            const wrongReviewCount = getTodayWrongReviewCount();
+            const wrongIndices = getTodayWrongIndices();
+
+            let details = [];
+            TAB_NAMES.forEach(tab => {
+                const count = learnedSets[tab] ? learnedSets[tab].size : 0;
+                const total = ALL_CARD_GROUPS[tab].data.length;
+                const label = TAB_LABELS[tab] || tab;
+                details.push(`${label} ${count}/${total}`);
+            });
+
+            let wrongList = [];
+            if (wrongIndices.length > 0) {
+                const currentData = getCurrentData();
+                const currentTabName = TAB_LABELS[currentTab] || currentTab;
+                wrongIndices.forEach(idx => {
+                    const card = currentData[idx];
+                    if (card) { wrongList.push(`${card.group.join(' / ')}（${currentTabName}）`); }
+                });
+            }
+            const wrongListText = wrongList.length > 0 ? wrongList.join('、') : '无';
+
+            const duration = getDurationMinutes();
+            const appTitleText = APP_CONFIG.title || '辨析闪卡';
+
+            return {
+                title: `【${appTitleText} · 今日学习情况】`,
+                items: [
+                    `今日新学单词：${newCount} 个`,
+                    `今日错题复盘（累计）：${wrongReviewCount} 次`,
+                    `今日新增错题：${wrongIndices.length} 个`,
+                    { label: '当前分类完成明细：', subItems: details },
+                    { label: '今日待巩固错题清单（混淆词汇组）：', subItems: [wrongListText] },
+                    `学习时长：${duration} 分钟`
+                ]
+            };
+        }
+
+        function showReport() {
+            const data = generateReportLines();
+            let html = `<div class="center">${data.title}</div>`;
+            data.items.forEach(item => {
+                if (typeof item === 'string') {
+                    html += `<div class="center" style="width:100%;">${item}</div>`;
+                } else {
+                    html += `<div class="center" style="width:100%;font-weight:500;margin-top:4px;">${item.label}</div>`;
+                    item.subItems.forEach(sub => {
+                        html += `<div class="center" style="width:100%;">${sub}</div>`;
+                    });
+                }
+            });
+            reportText.innerHTML = html;
+            reportModalTitle.textContent = APP_CONFIG.title + ' · 今日日报';
+            reportModal.classList.add('active');
+        }
+
+        function closeReport() { reportModal.classList.remove('active'); }
+
+        function copyReport() {
+            const data = generateReportLines();
+            let lines = [data.title];
+            data.items.forEach(item => {
+                if (typeof item === 'string') {
+                    lines.push(item);
+                } else {
+                    lines.push(item.label);
+                    item.subItems.forEach(sub => { lines.push('  ' + sub); });
+                }
+            });
+            const text = lines.join('\n');
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => alert('✅ 日报已复制到剪贴板！'))
+                    .catch(() => {
+                        const ta = document.createElement('textarea');
+                        ta.value = text;
+                        document.body.appendChild(ta);
+                        ta.select();
+                        document.execCommand('copy');
+                        ta.remove();
+                        alert('✅ 日报已复制到剪贴板！');
+                    });
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                alert('✅ 日报已复制到剪贴板！');
+            }
+        }
+
+        // ============================================================
+        // 导出错题标记（原有功能，保持不变）
+        // ============================================================
+        function generateExportText() {
+            const lines = [];
+            const now = new Date();
+            const dateStr = now.toISOString().slice(0, 10);
+            const appTitleText = APP_CONFIG.title || '辨析闪卡';
+            lines.push(`◆ ${appTitleText} · 标记导出 (${dateStr})`);
+            lines.push('');
+
+            TAB_NAMES.forEach(tab => {
+                const tabLabel = TAB_LABELS[tab] || tab;
+                const data = ALL_CARD_GROUPS[tab].data;
+                const fav = favSets[tab] || new Set();
+                const wrong = wrongSets[tab] || new Set();
+
+                const favList = [];
+                const wrongList = [];
+                data.forEach((card, idx) => {
+                    const wordStr = card.group.join(' / ');
+                    if (fav.has(idx)) favList.push(wordStr);
+                    if (wrong.has(idx)) wrongList.push(wordStr);
+                });
+
+                if (favList.length > 0 || wrongList.length > 0) {
+                    lines.push(`【${tabLabel}】`);
+                    if (favList.length > 0) {
+                        lines.push(`  收藏 (${favList.length}): ${favList.join('；')}`);
+                    }
+                    if (wrongList.length > 0) {
+                        lines.push(`  错题 (${wrongList.length}): ${wrongList.join('；')}`);
+                    }
+                    lines.push('');
+                }
+            });
+
+            const totalFav = TAB_NAMES.reduce((acc, t) => acc + (favSets[t] || new Set()).size, 0);
+            const totalWrong = TAB_NAMES.reduce((acc, t) => acc + (wrongSets[t] || new Set()).size, 0);
+            lines.push(`● 总计：收藏 ${totalFav} 张，错题 ${totalWrong} 张`);
+            lines.push('--- 可粘贴至 Anki 或文本笔记 ---');
+
+            return lines.join('\n');
+        }
+
+        function showExport() {
+            const text = generateExportText();
+            exportText.textContent = text;
+            exportModalTitle.textContent = '◆ ' + (APP_CONFIG.title || '辨析闪卡') + ' · 标记导出';
+            exportModal.classList.add('active');
+        }
+
+        function closeExport() { exportModal.classList.remove('active'); }
+
+        function copyExport() {
+            const text = exportText.textContent;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => alert('✅ 标记已复制到剪贴板！'))
+                    .catch(() => {
+                        const ta = document.createElement('textarea');
+                        ta.value = text;
+                        document.body.appendChild(ta);
+                        ta.select();
+                        document.execCommand('copy');
+                        ta.remove();
+                        alert('✅ 标记已复制到剪贴板！');
+                    });
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                alert('✅ 标记已复制到剪贴板！');
+            }
+        }
+
+        // ============================================================
+        // 重置刷题记录（不变）
+        // ============================================================
+        function resetAllRecords() {
+            if (!confirm('确定要清空当前命名空间「' + APP_CONFIG.storageNamespace + '」的所有刷题记录吗？\n（收藏、错题、学习进度将被清除，原始卡片数据不会丢失）')) return;
+            if (!confirm('⚠️ 此操作不可撤销！确定继续？')) return;
+
+            TAB_NAMES.forEach(tab => {
+                learnedSets[tab] = new Set();
+                favSets[tab] = new Set();
+                wrongSets[tab] = new Set();
+                masteryMaps[tab] = {};
+                setStore('learned_' + tab, []);
+                setStore('fav_' + tab, []);
+                setStore('wrong_' + tab, []);
+                setStore('mastery_' + tab, {});
+            });
+
+            setStore('app_phase', 'phase1');
+            setStore('app_phase1_start', getToday());
+            setStore('app_today_date', '');
+            setStore('app_today_new_count', 0);
+            setStore('app_today_wrong_indices', []);
+            setStore('app_today_wrong_review_count', 0);
+            setStore('app_daily_history', {});
+            // 重置时也要更新上次使用日期，避免跨天逻辑误判
+            setStore('app_last_use_date', getToday());
+
+            currentFilter = 'all';
+            searchTerm = '';
+            searchInput.value = '';
+            searchClear.classList.remove('visible');
+            filteredIndices = getFilteredIndices();
+            if (filteredIndices.length > 0) currentIndex = filteredIndices[0];
+            else currentIndex = -1;
+            isFlipped = false;
+            renderCard();
+            updateFilterButtons();
+            alert('✅ 当前命名空间「' + APP_CONFIG.storageNamespace + '」所有刷题记录已重置。');
+        }
+
+        // ============================================================
+        // 搜索（不变）
+        // ============================================================
+        searchInput.addEventListener('input', function() {
+            searchTerm = this.value;
+            searchClear.classList.toggle('visible', this.value.length > 0);
+            filteredIndices = getFilteredIndices();
+            if (filteredIndices.length > 0) currentIndex = filteredIndices[0];
+            else currentIndex = -1;
+            isFlipped = false;
+            renderCard();
+        });
+
+        searchClear.addEventListener('click', function() {
+            searchInput.value = '';
+            searchTerm = '';
+            searchClear.classList.remove('visible');
+            filteredIndices = getFilteredIndices();
+            if (filteredIndices.length > 0) currentIndex = filteredIndices[0];
+            else currentIndex = -1;
+            isFlipped = false;
+            renderCard();
+            searchInput.focus();
+        });
+
+        // ============================================================
+        // Tab 切换（不变）
+        // ============================================================
+        function buildTabs() {
+            const tabBar = document.getElementById('tabBar');
+            tabBar.innerHTML = '';
+            TAB_NAMES.forEach((tab, idx) => {
+                const btn = document.createElement('button');
+                btn.dataset.tab = tab;
+                btn.textContent = TAB_LABELS[tab] || tab;
+                if (idx === 0) btn.classList.add('active');
+                btn.addEventListener('click', function() { switchTab(this.dataset.tab); });
+                tabBar.appendChild(btn);
+            });
+        }
+
+        function switchTab(tab) {
+            if (tab === currentTab) return;
+            saveSets(currentTab);
+            currentTab = tab;
+            currentIndex = 0;
+            isFlipped = false;
+            loadSets(tab);
+            filteredIndices = getFilteredIndices();
+            if (filteredIndices.length > 0) currentIndex = filteredIndices[0];
+            else currentIndex = -1;
+            renderCard();
+            document.querySelectorAll('.tab-bar button').forEach(b => {
+                b.classList.toggle('active', b.dataset.tab === tab);
+            });
+            updateFilterButtons();
+        }
+
+        // ============================================================
+        // 事件绑定（保留原有，新增备份按钮事件）
+        // ============================================================
+        cardEl.addEventListener('dblclick', function(e) {
+            e.stopPropagation();
+            if (dblClickTimer) {
+                clearTimeout(dblClickTimer);
+                dblClickTimer = null;
+                return;
+            }
+            dblClickTimer = setTimeout(() => {
+                toggleFlip();
+                dblClickTimer = null;
+            }, DBL_CLICK_DELAY);
+        });
+
+        cardEl.addEventListener('click', function(e) {
+            if (e.target.closest('.card-actions') || e.target.closest('.analysis')) return;
+            if (e.detail > 1) return;
+            if (clickCooldown) return;
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            if (x < rect.width / 3) { prevCard(); } else if (x > rect.width * 2 / 3) { nextCard(); }
+        });
+
+        favBtn.addEventListener('click', function() {
+            if (currentFilter === 'fav') applyFilter('all');
+            else applyFilter('fav');
+        });
+        wrongBtn.addEventListener('click', function() {
+            if (currentFilter === 'wrong') applyFilter('all');
+            else applyFilter('wrong');
+        });
+        resetBtn.addEventListener('click', function() {
+            if (currentFilter === 'review') applyFilter('all');
+            else applyFilter('review');
+        });
+        deathBtn.addEventListener('click', function() { alert('地狱模式将在二期开放。'); });
+
+        modeToggle.addEventListener('click', function() {
+            const current = getControlMode();
+            const next = current === 'strict' ? 'loose' : 'strict';
+            setControlMode(next);
+            modeLabel.textContent = next === 'strict' ? '严格' : '宽松';
+            modeDot.className = 'dot ' + next;
+            updateDashboard();
+        });
+
+        styleToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') { e.preventDefault();
+                nextCard(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault();
+                prevCard(); }
+            if (e.key === ' ') { e.preventDefault();
+                toggleFlip(); }
+        });
+
+        reportBtn.addEventListener('click', showReport);
+        closeReportBtn.addEventListener('click', closeReport);
+        copyReportBtn.addEventListener('click', copyReport);
+        reportModal.addEventListener('click', function(e) { if (e.target === this) closeReport(); });
+
+        // 原有导出错题按钮（保留）
+        exportBtn.addEventListener('click', showExport);
+        closeExportBtn.addEventListener('click', closeExport);
+        copyExportBtn.addEventListener('click', copyExport);
+        exportModal.addEventListener('click', function(e) { if (e.target === this) closeExport(); });
+
+        resetRecordsBtn.addEventListener('click', resetAllRecords);
+
+        // ============================================================
+        // 新增备份功能：导出完整学习进度（JSON）
+        // ============================================================
+        function exportBackup() {
+            const data = {
+                version: '1.0',
+                namespace: APP_CONFIG.storageNamespace,
+                exportTime: new Date().toISOString(),
+                learned: {},
+                fav: {},
+                wrong: {},
+                mastery: {},
+                phase: getPhase(),
+                controlMode: getControlMode(),
+                todayDate: getTodayDate(),
+                todayNewCount: getTodayNewCount(),
+                todayWrongIndices: getTodayWrongIndices(),
+                todayWrongReviewCount: getTodayWrongReviewCount(),
+                dailyHistory: getDailyHistory(),
+                phase1Start: getStore('app_phase1_start', getToday()),
+                lastUseDate: getStore('app_last_use_date', getToday()),
+            };
+
+            TAB_NAMES.forEach(tab => {
+                data.learned[tab] = learnedSets[tab] ? [...learnedSets[tab]] : [];
+                data.fav[tab] = favSets[tab] ? [...favSets[tab]] : [];
+                data.wrong[tab] = wrongSets[tab] ? [...wrongSets[tab]] : [];
+                data.mastery[tab] = masteryMaps[tab] ? { ...masteryMaps[tab] } : {};
+            });
+
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `flashcard_backup_${getToday()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importBackup(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (!data.version || !data.learned || !data.fav || !data.wrong || !data.mastery) {
+                        alert('无效的备份文件：缺少必要字段。');
+                        return;
+                    }
+                    if (!confirm(`即将恢复备份文件（${data.exportTime || '未知时间'}），当前进度将被覆盖，确定继续吗？`)) return;
+
+                    TAB_NAMES.forEach(tab => {
+                        if (data.learned[tab]) {
+                            learnedSets[tab] = new Set(data.learned[tab]);
+                            setStore('learned_' + tab, data.learned[tab]);
+                        }
+                        if (data.fav[tab]) {
+                            favSets[tab] = new Set(data.fav[tab]);
+                            setStore('fav_' + tab, data.fav[tab]);
+                        }
+                        if (data.wrong[tab]) {
+                            wrongSets[tab] = new Set(data.wrong[tab]);
+                            setStore('wrong_' + tab, data.wrong[tab]);
+                        }
+                        if (data.mastery[tab]) {
+                            masteryMaps[tab] = data.mastery[tab];
+                            setStore('mastery_' + tab, data.mastery[tab]);
+                        }
+                    });
+
+                    if (data.phase) setStore('app_phase', data.phase);
+                    if (data.controlMode) setStore('app_control_mode', data.controlMode);
+                    if (data.todayDate) setStore('app_today_date', data.todayDate);
+                    if (data.todayNewCount !== undefined) setStore('app_today_new_count', data.todayNewCount);
+                    if (data.todayWrongIndices) setStore('app_today_wrong_indices', data.todayWrongIndices);
+                    if (data.todayWrongReviewCount !== undefined) setStore('app_today_wrong_review_count', data.todayWrongReviewCount);
+                    if (data.dailyHistory) setStore('app_daily_history', data.dailyHistory);
+                    if (data.phase1Start) setStore('app_phase1_start', data.phase1Start);
+                    if (data.lastUseDate) setStore('app_last_use_date', data.lastUseDate);
+
+                    alert('✅ 备份恢复成功！页面将刷新以应用最新数据。');
+                    location.reload();
+                } catch (err) {
+                    alert('读取备份文件失败：' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        exportBackupBtn.addEventListener('click', exportBackup);
+        importBackupBtn.addEventListener('click', function() {
+            fileInput.click();
+        });
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files.length > 0) {
+                importBackup(this.files[0]);
+                this.value = '';
+            }
+        });
+
+        // ============================================================
+        // 初始化
+        // ============================================================
+        function init() {
+            // 【新增】页面加载时执行跨天检查（仅一次，无定时器）
+            checkAndResetDailyQuota();
+
+            document.title = APP_CONFIG.title || '辨析闪卡';
+            appTitle.textContent = '英语单词 · 辨析闪卡';
+            tipText.textContent = '请勿使用无痕模式；清除浏览器数据会丢失收藏、错题标记';
+
+            buildTabs();
+
+            updateDayLabel();
+            updateDeathIcon();
+            startTimer();
+
+            TAB_NAMES.forEach(tab => loadSets(tab));
+            const totalCards = getTotalCards();
+            if (getTotalLearned() >= totalCards && getPhase() === 'phase1') {
+                setPhase('phase2');
+            }
+
+            const mode = getControlMode();
+            modeLabel.textContent = mode === 'strict' ? '严格' : '宽松';
+            modeDot.className = 'dot ' + mode;
+
+            filteredIndices = getFilteredIndices();
+            if (filteredIndices.length > 0) currentIndex = filteredIndices[0];
+            else currentIndex = -1;
+
+            renderCard();
+
+            const deathIconSVG = getDeathIconSmall();
+            const deathDesc = getDeathModeDescription();
+
+            const exportIconSVG = `<svg viewBox="0 0 28 28" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                        <line x1="10" y1="4" x2="18" y2="4" stroke="currentColor" stroke-width="4.5"/>
+                        <path d="M14 8 L14 22 M10 13 L14 8 L18 13" stroke="currentColor" stroke-width="4.5" fill="none"/>
+                    </svg>`;
+
+            shortcutToast.innerHTML = `
+                <div>
+                    <kbd>←</kbd> 上一张 ｜ <kbd>双击</kbd> 翻转 ｜ <kbd>→</kbd> 下一张 ｜
+                    <kbd>★</kbd> 收藏 ｜ <kbd>✕</kbd> 错题 ｜ <kbd>↺</kbd> 复习 ｜
+                    <span style="display:inline-flex;align-items:center;gap:2px;vertical-align:middle;">
+                        <span style="display:inline-block;width:18px;height:18px;vertical-align:middle;">${deathIconSVG}</span>
+                        <span>地狱模式（${deathDesc}）</span>
+                    </span>
+                     ｜ <kbd>☰</kbd> 日报 ｜ <span class="toast-export-icon">${exportIconSVG}</span> 导出 ｜ <kbd>⟳</kbd> 重置
+                </div>
+            `;
+
+            const tipEl = document.getElementById('shortcutToast');
+            if (tipEl) {
+                tipEl.classList.add('show');
+                setTimeout(() => {
+                    tipEl.classList.remove('show');
+                }, 3000);
+            }
+
+            setInterval(() => {
+                updateDayLabel();
+                updateDeathIcon();
+            }, 60000);
+
+            // 自检报告
+            console.log('=== 代码层面自检报告 ===');
+            console.log('词根词缀:', parsed.root.length);
+            console.log('熟词僻义:', parsed.uncommon.length);
+            console.log('近义词:', parsed.synonym.length);
+            console.log('形近词:', parsed.shape.length);
+            const total = parsed.root.length + parsed.uncommon.length + parsed.synonym.length + parsed.shape.length;
+            console.log('总计:', total);
+            console.log('预期完整总量: 320');
+            if (total === 320) {
+                console.log('✅ 总和严格等于320');
+            } else {
+                console.log('❌ 总和不为320，当前为', total);
+            }
+            console.log('--- 跨天重置状态 ---');
+            console.log('今日日期:', getToday());
+            console.log('上次使用日期:', getStore('app_last_use_date', '未设置'));
+            console.log('今日新词数:', getTodayNewCount());
+            console.log('今日错题数:', getTodayWrongIndices().length);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
